@@ -75,7 +75,8 @@ const NavBar = (props) => {
           Log in
         </Link>
         <Link
-          to="/sign-up"
+          to="/orders"
+          // to="/sign-up"
           className="hidden md:block border-2 rounded-full px-3 py-2 cursor-pointer hover:bg-purple-900 hover:text-white"
         >
           Sign up

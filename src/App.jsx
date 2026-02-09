@@ -8,6 +8,8 @@ import Cart from "./pages/Cart";
 import Shipping from "./pages/Shipping";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Payment from "./pages/Payment";
+import OrderSuccess from "./pages/OrderSuccess";
+import Orders from "./pages/Orders";
 
 const App = () => {
   return (
@@ -30,9 +32,26 @@ const App = () => {
             path="/payment"
             element={
               <ProtectedRoute>
-                <Payment/>
+                <Payment />
               </ProtectedRoute>
-            }></Route>
+            }
+          ></Route>
+          <Route
+            path="/order-success"
+            element={
+              <ProtectedRoute>
+                <OrderSuccess />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute>
+                <Orders />
+              </ProtectedRoute>
+            }
+          ></Route>
         </Route>
 
         <Route path="*" element={<PageNotExist />} />

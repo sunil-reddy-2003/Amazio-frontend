@@ -12,7 +12,7 @@ const Cart = () => {
 
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
-    0,
+    0
   );
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);

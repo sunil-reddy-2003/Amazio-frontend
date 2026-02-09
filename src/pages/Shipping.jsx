@@ -32,12 +32,9 @@ const Shipping = (props) => {
   useEffect(() => {
     const savedAddress = JSON.parse(localStorage.getItem("addressStorage"));
     if (savedAddress) {
-      console.log("true");
       setAddress(savedAddress);
       setShowAddressDetails(true);
-      console.log("showAddressDetails",showAddressDetails);
     }else {
-      console.log("false");
     setShowAddressDetails(false); 
   }
   }, []);
@@ -114,11 +111,11 @@ const Shipping = (props) => {
                 )}
                 <div className="text-[14px] font-sans">
                   <p>
-                    {address.flat}, {address.area},
+                    {address.flat+", "}{address.area+", "}
                   </p>
-                  <p>{address.landmark}, </p>
+                  <p>{address.landmark+", "}</p>
                   <p>
-                    {address.city}, {address.state},
+                    {address.city+", "}{address.state+", "}
                   </p>
                   <p>india - {address.pincode}</p>
                   <p>

@@ -1,12 +1,19 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import BackToTop from "../components/BackToTop";
 
 const Layout = () => {
   const [searchText, setSearchText] = useState("");
   const [cartItems, setCartItems] = useState([]);
+  const [orders, setOrders] = useState([]);
+
+  useEffect(()=>{
+    const savedOrders=JSON.parse(localStorage.getItem("orders")) || [];
+    setOrders(savedOrders);
+  },[])
+  
 
   const addToCart = (product) => {
     setCartItems((prevCart) => {
@@ -44,6 +51,31 @@ const Layout = () => {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const totalPrice = cartItems.reduce((sum, item) => {
+    return (sum += item.price * item.quantity);
+  }, 0);
+
+  const totalItems = cartItems.reduce((sum, item) => {
+    return (sum += item.quantity);
+  }, 0);
+  const orderComplete = () => {
+    setOrders((prevOrders) => {
+      const uniqueId = "SUPE" + Math.floor(Math.random() * 100000);
+
+      const newOrder = {
+        orderId: uniqueId,
+        items: cartItems,
+        quantity:totalItems,
+        price:totalPrice
+      };
+      const updatedOrders = [...prevOrders, newOrder];
+
+      localStorage.setItem("orders", JSON.stringify(updatedOrders));
+      return updatedOrders;
+    });
+    setCartItems([]);
+  };
+  console.log(orders);
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar onSearch={setSearchText} />
@@ -56,6 +88,8 @@ const Layout = () => {
             increaseQty,
             decreaseQty,
             deleteItem,
+            orderComplete,
+            orders,
           }}
         />
       </main>
