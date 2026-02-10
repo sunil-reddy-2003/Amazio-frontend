@@ -29,43 +29,43 @@ const Payment = () => {
   return (
     <div className=" flex ">
       <div className=" flex flex-col py-8 pl-30 pr-16 w-[75%]">
-        <div className="px-16 py-4 font-bold text-xl text-white bg-black mb-2">
+        <div className="px-16 py-4 font-bold text-xl text-white bg-linear-to-r from-green-800  to-green-400 mb-2">
           <p>SELECT PAYMENT METHOD</p>
         </div>
         <div className="flex relative w-full bg-slate-800 ">
           <ul className=" flex flex-col w-1/3  font-light text-xl cursor-pointer">
             <li
-              className=" px-16 py-2 bg-black/60 text-white hover:-translate-y-1 hover:scale-100 hover:duration-300 hover:bg-rose-500 hover:text-white"
+              className=" px-16 py-2 bg-black/60 text-white hover:-translate-y-1 hover:scale-100 hover:duration-300 hover:bg-purple-500 hover:text-white"
               onClick={() => setSelectedPaymentMethod("creditCard")}
             >
               Credit/ Debit Card
             </li>
             <li
-              className=" px-16 py-2  bg-black/60 text-white hover:-translate-y-2 hover:duration-300 hover:bg-rose-500 hover:text-white"
+              className=" px-16 py-2  bg-black/60 text-white hover:-translate-y-2 hover:duration-300 hover:bg-purple-500 hover:text-white"
               onClick={() => setSelectedPaymentMethod("netBanking")}
             >
               NetBanking
             </li>
             <li
-              className=" px-16 py-2 bg-black/60 text-white hover:-translate-y-2 hover:duration-300 hover:bg-rose-500 hover:text-white"
+              className=" px-16 py-2 bg-black/60 text-white hover:-translate-y-2 hover:duration-300 hover:bg-purple-500 hover:text-white"
               onClick={() => setSelectedPaymentMethod("wallet")}
             >
               Wallet
             </li>
             <li
-              className=" px-16 py-2 bg-black/60 text-white hover:-translate-y-2 hover:duration-300 hover:bg-rose-500 hover:text-white"
+              className=" px-16 py-2 bg-black/60 text-white hover:-translate-y-2 hover:duration-300 hover:bg-purple-500 hover:text-white"
               onClick={() => setSelectedPaymentMethod("upi")}
             >
               UPI
             </li>
             <li
-              className=" px-16 py-2 bg-black/60 text-white hover:-translate-y-2 hover:duration-300 hover:bg-rose-500 hover:text-white"
+              className=" px-16 py-2 bg-black/60 text-white hover:-translate-y-2 hover:duration-300 hover:bg-purple-500 hover:text-white"
               onClick={() => setSelectedPaymentMethod("emi")}
             >
               EMI
             </li>
             <li
-              className=" px-16 py-2 bg-black/60 text-white hover:-translate-y-2 hover:duration-300 hover:bg-rose-500 hover:text-white"
+              className=" px-16 py-2 bg-black/60 text-white hover:-translate-y-2 hover:duration-300 hover:bg-purple-500 hover:text-white"
               onClick={() => setSelectedPaymentMethod("cod")}
             >
               Cash on delivery

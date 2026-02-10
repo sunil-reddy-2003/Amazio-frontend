@@ -69,8 +69,8 @@ const Shipping = (props) => {
   const nextStep = "/payment";
   return (
     <div className="flex gap-4  p-2 relative">
-      <div className="ml-28 p-8 w-[75%] bg-white">
-        <div className=" flex flex-col border-b border-gray-300 pb-4">
+      <div className="ml-28 p-8 w-[75%] bg-white/30">
+        <div className=" flex flex-col ">
           <div className=" py-6 px-2 ">
             <div className="flex">
               <i className="fa-solid fa-location-dot text-4xl p-2"></i>
@@ -96,7 +96,7 @@ const Shipping = (props) => {
             )}
           </div>
           {showAddressDetails && (
-            <div className="flex gap-130">
+            <div className="flex gap-130 border-b border-gray-400 pb-4">
               <div className="px-4">
                 <div className="flex gap-1">
                   <h3 className="font-bold pr-2 text-[15px]">{address.name}</h3>
@@ -203,7 +203,7 @@ const Shipping = (props) => {
         />
         {showAddressForm && (
           <div className="fixed top-0 right-0 h-screen flex justify-end z-50 backdrop-blur-sm w-full">
-            <div className="bg-white p-6 overflow-auto shadow-xl">
+            <div className="p-6 overflow-auto shadow-xl bg-white">
               <Address
                 setShowAddressForm={setShowAddressForm}
                 mode={formMode}

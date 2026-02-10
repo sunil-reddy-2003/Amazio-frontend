@@ -54,7 +54,7 @@ const Cart = () => {
     <div className="flex flex-col justify-center items-center h-84 text-center text-xl font-semibold text-gray-700 m-10">
       <div className="fa-solid fa-cart-arrow-down fa-shake text-black text-8xl p-4 md:block"></div>
 
-      <p className="text-black font-bold text-md fa-fade">
+      <p className="text-black font-bold text-md ">
         Your cart is looking a little empty{" "}
         <span>
           <i className="fa-regular fa-face-frown"></i>
@@ -62,7 +62,7 @@ const Cart = () => {
       </p>
 
       <button
-        className="m-4 px-18 py-2 bg-black text-sm border-black text-white rounded hover:bg-green-500 hover:text-black"
+        className="m-4 px-18 py-2 bg-black text-sm border-black text-white rounded hover:bg-green-800 "
         onClick={() => {
           navigate("/");
         }}

@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const NavBar = (props) => {
-  const { onSearch } = props;
+  const { onSearch, cartTotal } = props;
   const [open, setOpen] = useState(false);
+  const [profile, setProfile] = useState(false);
+  const { isLoggedIn,setIsLoggedIn } = useAuth();
+
+  const profileClick=()=>{
+    setProfile((prev)=>!prev)
+  }
 
   return (
-    <nav className="sticky top-0 z-50 bg-black/80 backdrop-blur-xs shadow-xl flex items-center justify-between px-14 py-4  rounded-full mt-2 mx-4 text-white">
-      {/* Hamburger - MOBILE ONLY */}
+    <nav className="sticky top-0 z-50 bg-gradient-to-r from-black/100 via-black/60 to-black/80 backdrop-blur-xs shadow-xl flex items-center justify-between px-14 py-4  rounded-full my-2 mx-4 text-white">
       <button
         onClick={() => setOpen((prev) => !prev)}
         className="md:hidden"
@@ -18,7 +24,6 @@ const NavBar = (props) => {
         <i className="fa-solid fa-bars cursor-pointer"></i>
       </button>
 
-      {/* Logo */}
       <Link
         to="."
         className="flex items-center text-2xl font-bold gap-2 flex-shrink-0 "
@@ -63,32 +68,71 @@ const NavBar = (props) => {
         </Link>
       </div>
 
-      {/*cart login and signup */}
-      <div className="flex justify-center items-center gap-4 font-bold flex-shrink-0">
-        <Link to="/cart" className="p-1 rounded-full cursor-pointer">
-          <i className="fa-solid fa-cart-arrow-down text-lg md:block"></i>
-        </Link>
+      <div className="flex gap-4">
         <Link
-          to="/log-in"
-          className="hidden md:block border-2 rounded-full px-3 py-2 cursor-pointer hover:bg-black hover:text-white"
+          to="/cart"
+          className="flex flex-col items-center justify-center cursor-pointer  border-t rounded-full"
         >
-          Log in
+          <p className=" text-sm  font-bold  text-white ">{cartTotal}</p>
+          <i className="fa-solid fa-cart-arrow-down text-2xl md:block"></i>
         </Link>
-        <Link
-          to="/orders"
-          // to="/sign-up"
-          className="hidden md:block border-2 rounded-full px-3 py-2 cursor-pointer hover:bg-purple-900 hover:text-white"
-        >
-          Sign up
-        </Link>
+        {isLoggedIn ? (
+          <button 
+            className=" font-bold text-2xl" 
+            aria-label="Account menu"
+            onClick={profileClick}
+          >
+            <i className="fa-solid fa-circle-user text-4xl"></i>
+          </button>
+        ) : (
+          <div className="flex justify-center items-center gap-4 font-bold flex-shrink-0 ">
+            <Link
+              to="/log-in"
+              className="hidden md:block border-2 rounded-full px-3 py-2 cursor-pointer hover:bg-black hover:text-white"
+            >
+              Log in
+            </Link>
+            <Link
+              to="/sign-up"
+              className="hidden md:block border-2 rounded-full px-3 py-2 cursor-pointer hover:bg-purple-900 hover:text-white"
+            >
+              Sign up
+            </Link>
+          </div>
+        )}
       </div>
 
-      <button
-        className="md:hidden font-bold text-2xl"
-        aria-label="Account menu"
-      >
-        <i className="fa-solid fa-circle-user"></i>
-      </button>
+      {profile && (
+        <div className="absolute flex flex-col h-screen/2 w-[200px] bg-white/90 shadow-lg top-20 right-0 ">
+          <h1 className="font-bold text-xl text-white text-center bg-black px-4 py-2">
+            My Account
+          </h1>
+          <div className="flex flex-col items-stretch text-black text-lg font-mono text-left">
+            <Link to="/profile" className="hover:bg-gray-600 px-4" onClick={profileClick}>
+              {" "}
+              Profile
+            </Link>
+            <Link to="/orders" className="hover:bg-gray-600 px-4" onClick={profileClick}>
+              {" "}
+              My orders
+            </Link>
+            <Link to="/profile" className="hover:bg-gray-600 px-4" onClick={profileClick}>
+              Address book
+            </Link>
+            <Link to="/profile" className="hover:bg-gray-600 px-4" onClick={profileClick}>
+              Wallet balance
+            </Link>
+
+            <button 
+              className="bg-green-500 hover:bg-red-700 text-left font-bold px-4"
+              onClick={()=>{
+                profileClick();
+                setIsLoggedIn(false);
+              }}
+            >Log out</button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

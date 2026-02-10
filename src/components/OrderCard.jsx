@@ -1,19 +1,17 @@
 const OrderCard = (props) => {
   const { order, date, month, year } = props;
   return (
-    <div className="flex flex-col  border-b border-gray-400 mb-2 w-full">
-      <div className=" px-10 py-2 bg-black/90 ">
-        <div className="flex items-center justify-between ">
-          <div className=" font-semibold text-white">
+    <div className="flex flex-col   mb-2 w-full hover:-translate-y-0 hover:scale-98 duration-300  text-white">
+        <div className="flex items-center justify-between px-10 bg-green-900 backdrop-blur-xl">
+          <div className=" ">
             <p className="text-lg  ">Order Placed on</p>
             <p className="text-md">{date + " " + month + " " + year}</p>
           </div>
-          <p className="text-lg font-semibold text-white">
+          <p className="text-lg   underline decoration-dotted">
             Order id: {order.orderId}
           </p>
-        </div>
       </div>
-      <div className="flex flex-col px-10 py-2   bg-black/30  text-slate-900 font-semibold ">
+      <div className="flex flex-col px-10 py-6 bg-black/90 ">
         <p className="text-md flex  gap-4">
           <span>Price : </span>
           <span>₹{order.price}</span>

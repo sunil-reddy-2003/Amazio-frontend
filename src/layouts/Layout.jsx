@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import BackToTop from "../components/BackToTop";
 
 const Layout = () => {
@@ -9,11 +9,10 @@ const Layout = () => {
   const [cartItems, setCartItems] = useState([]);
   const [orders, setOrders] = useState([]);
 
-  useEffect(()=>{
-    const savedOrders=JSON.parse(localStorage.getItem("orders")) || [];
+  useEffect(() => {
+    const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
     setOrders(savedOrders);
-  },[])
-  
+  }, []);
 
   const addToCart = (product) => {
     setCartItems((prevCart) => {
@@ -65,8 +64,8 @@ const Layout = () => {
       const newOrder = {
         orderId: uniqueId,
         items: cartItems,
-        quantity:totalItems,
-        price:totalPrice
+        quantity: totalItems,
+        price: totalPrice,
       };
       const updatedOrders = [...prevOrders, newOrder];
 
@@ -75,11 +74,12 @@ const Layout = () => {
     });
     setCartItems([]);
   };
-  console.log(orders);
   return (
-    <div className="min-h-screen flex flex-col">
-      <NavBar onSearch={setSearchText} />
-      <main className="flex-1 bg-white">
+    <div className="min-h-screen flex flex-col bg-gradient-to-r from-black/10 via-black/60 to-black/10">
+      <NavBar 
+        onSearch={setSearchText}
+        cartTotal={totalItems}/>
+      <main className="flex-1 ">
         <Outlet
           context={{
             searchText,

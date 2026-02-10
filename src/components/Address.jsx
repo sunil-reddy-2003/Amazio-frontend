@@ -13,7 +13,7 @@ const Address = (props) => {
   } = props;
 
   return (
-    <div>
+    <div className="">
       <div className="flex justify-between px-6 ">
         <h1 className="text-2xl font-bold">{mode}</h1>
         <i
