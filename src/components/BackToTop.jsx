@@ -18,9 +18,9 @@ const BackToTop = () => {
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       aria-label="Back to top"
-      className="fixed bottom-1 right-2 bg-black/60 backdrop-blur-md shadow-xl w-20 h-20 text-xl  transition rounded-full cursor-pointer"
+      className="fixed p-4 bottom-1 right-2 bg-black/60 backdrop-blur-md shadow-xl text-xl  transition rounded-full cursor-pointer"
     >
-      <i className="text-white fa-solid fa-arrow-up-long fa-bounce"></i>
+      <i className="text-white fa-solid fa-arrow-up-long fa-beat"></i>
     </button>
   );
 };

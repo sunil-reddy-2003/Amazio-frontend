@@ -1,10 +1,13 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import {useState} from "react";
 
 const LogIn = () => {
   const { setIsLoggedIn, redirectAfterLogin, setRedirectAfterLogin } =
     useAuth();
   const navigate = useNavigate();
+
+  const [loginData,setLoginData]=useState({email:"",password:""});
   return (
     <div className="h-screen flex my-2 mx-4 ">
       {/* Left Side */}
@@ -14,7 +17,13 @@ const LogIn = () => {
 
       {/* Right Side */}
       <div className="w-full md:w-[45%] border-r-2 rounded-r-md bg-gray-800 flex items-center justify-center">
-        <form className="w-full max-w-md px-6 py-10">
+        <form 
+          className="w-full max-w-md px-6 py-10"
+          onSubmit={(e)=>{
+            e.preventDefault();
+            localStorage.setItem("loginData",JSON.stringify(loginData));
+          }}  
+          >
           <h4 className="font-bold text-2xl text-white mb-6 text-left">
             Log into Amazon
           </h4>
@@ -27,6 +36,10 @@ const LogIn = () => {
               required
               placeholder=" "
               className="peer text-xl  px-6 pt-6 pb-3 rounded-md bg-gray-900 border"
+              value={loginData.email}
+              onChange={(e)=>{
+                setLoginData({...loginData,email:e.target.value})
+              }}
             />
             <label
               htmlFor="email"
@@ -42,7 +55,7 @@ const LogIn = () => {
 
               peer-placeholder-shown:text-lg"
             >
-              Phone number / email address
+              email address
             </label>
           </div>
 
@@ -54,6 +67,10 @@ const LogIn = () => {
               required
               placeholder=" "
               className="peer text-xl  px-6 pt-6 pb-3 rounded-md bg-gray-900 border"
+              value={loginData.password}
+              onChange={(e)=>{
+                setLoginData({...loginData,password:e.target.value})
+              }}
             />
             <label
               htmlFor="password"
@@ -78,7 +95,6 @@ const LogIn = () => {
             type="submit"
             className="w-full rounded-full p-2 mb-3 text-xl text-white bg-slate-950 hover:bg-slate-500 hover:font-bold transition cursor-pointer"
             onClick={(e) => {
-              e.preventDefault();
               setIsLoggedIn(true);
               if (redirectAfterLogin) {
                 navigate(redirectAfterLogin);

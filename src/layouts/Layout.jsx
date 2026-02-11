@@ -14,6 +14,8 @@ const Layout = () => {
     setOrders(savedOrders);
   }, []);
 
+  
+
   const addToCart = (product) => {
     setCartItems((prevCart) => {
       const existingProduct = prevCart.find((p) => p.id === product.id);
@@ -75,7 +77,7 @@ const Layout = () => {
     setCartItems([]);
   };
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-r from-black/10 via-black/60 to-black/10">
+    <div className="min-h-screen flex flex-col bg-gradient-to-r from-black/20 via-black/50 to-black/20">
       <NavBar 
         onSearch={setSearchText}
         cartTotal={totalItems}/>
