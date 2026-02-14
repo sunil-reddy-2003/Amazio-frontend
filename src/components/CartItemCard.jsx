@@ -5,7 +5,7 @@ const CartItemCard = (props) => {
       <div className="flex">
         <div className="mr-2 w-[20%] p-2">
           <img
-            src={product.photo}
+            src={product.imageUrl}
             className="h-50 w-50 object-cover border border-white/20 rounded-sm"
           />
         </div>

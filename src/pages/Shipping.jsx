@@ -173,7 +173,7 @@ const Shipping = (props) => {
               {cartItems.map((item) => (
                 <div key={item.id} className="flex m-2 w-80">
                   <img
-                    src={item.photo}
+                    src={item.imageUrl}
                     className="rounded-md object-cover h-[100px] w-[100px]"
                   />
                   <div className="p-2">

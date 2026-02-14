@@ -3,7 +3,7 @@ const OrderInfoImageCard=(props)=>{
     return (
         <div className="bg-black/30 rounded-md flex  text-white/90">
             <img
-              src={item.photo}
+              src={item.imageUrl}
               className="object-cover w-30 h-30  rounded-l-md"
             ></img>
             <div className="flex flex-col p-4">

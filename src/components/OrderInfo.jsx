@@ -5,7 +5,6 @@ const OrderInfo = () => {
   const ORDER = orders.filter((order) => {
     return order.orderId === id;
   });
-  console.log(ORDER);
   return (
     <div className="m-4 flex  justify-center ">
       <div className=" w-[70%] rounded-md bg-white/40 p-6 ">
@@ -61,7 +60,7 @@ const OrderInfo = () => {
         </div>
         <div className="grid grid-cols-3 p-4 gap-8 border border-gray-200 rounded-md my-2">
           {ORDER[0].items.map((item) => {
-            return <OrderInfoImageCard item={item} />;
+            return <OrderInfoImageCard item={item} key={item.id}/>;
           })}
         </div>
       </div>

@@ -7,7 +7,9 @@ const ProductCard = (props) => {
       {" "}
       {/*border-[1px] rounded-4xl  transition delay-50 duration-600 ease-in-out hover:-translate-y-1 hover:scale-110  */}
       <img
-        src={product.photo}
+        src={product.imageUrl}
+        loading="lazy"
+        alt={product.name}
         className="w-70 h-70 object-cover border-2 border-black rounded-xl"
       />
       <div className="text-lg font-bold">{product.name}</div>
