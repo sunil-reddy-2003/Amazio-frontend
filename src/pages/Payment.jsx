@@ -3,7 +3,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { useState } from "react";
 
 const Payment = () => {
-  const { cartItems, orderComplete } = useOutletContext();
+  const { cartItems, createOrder } = useOutletContext();
   const navigate = useNavigate();
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState("cod");
@@ -26,6 +26,7 @@ const Payment = () => {
     year: "",
     cvv: "",
   });
+
   return (
     <div className=" flex ">
       <div className=" flex flex-col w-[75%] m-8 ">
@@ -129,7 +130,7 @@ const Payment = () => {
                 className={`border rounded-md px-4 py-2 bg-green-600 text-white ${btnState ? "cursor-not-allowed" : "hover:bg-black"}`}
                 onClick={() => {
                   if (btnState) return; 
-                  orderComplete(selectedPaymentMethod);
+                  createOrder(selectedPaymentMethod);
                   setBtnState(true);
                   navigate("/order-success");
                 }}

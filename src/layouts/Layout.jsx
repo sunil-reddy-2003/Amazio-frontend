@@ -3,17 +3,13 @@ import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import { useState, useEffect } from "react";
 import BackToTop from "../components/BackToTop";
+import axios from "axios";
 
 const Layout = () => {
   const [searchText, setSearchText] = useState("");
   const [cartItems, setCartItems] = useState([]);
-  const [orders, setOrders] = useState([]);
   const [address, setAddress] = useState({});
 
-  useEffect(() => {
-    const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
-    setOrders(savedOrders);
-  }, []);
 
   const addToCart = (product) => {
     setCartItems((prevCart) => {
@@ -68,36 +64,34 @@ const Layout = () => {
     emi: "EMI",
   };
 
-  const priceDetails = {
-    fees: 0,
-    totalPrice: totalPrice,
-    quantity: totalItems,
-  };
 
-  const orderComplete = (paymentMethod) => {
-    const date = new Date();
-    const dateArr = date.toDateString().split(" ");
-    const uniqueId = "SUPE" + Date.now();
-    console.log(uniqueId);
+  const createOrder = async (selectedPaymentMethod) => {
+    const products = cartItems.map((prod) => {
+      return { productId: prod.id, quantity: prod.quantity };
+    });
     const newOrder = {
-      orderId: uniqueId,
-      items: cartItems,
-      priceDetails: priceDetails,
-      status: "PLACED",
-      paymentMethod: paymentLabels[paymentMethod],
+      orderItem: products,
       address: address,
-      date: dateArr[2] + " " + dateArr[1] + " " + dateArr[3],
+      paymentMethod:paymentLabels[selectedPaymentMethod]
     };
 
-    setOrders((prevOrders) => {
-      const updatedOrders = [...prevOrders, newOrder];
-      localStorage.setItem("orders", JSON.stringify(updatedOrders));
-      return updatedOrders;
-    });
 
-    setCartItems([]);
+    try {
+      const response = await axios.post(
+        "http://localhost:9090/api/order/createOrder",
+        newOrder,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      setCartItems([]);
+      console.log("Order created with id:", response.data);
+    } catch (error) {
+      console.error("Error creating order:", error);
+    }
   };
-
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-r from-black/20 via-black/50 to-black/20">
       <NavBar onSearch={setSearchText} cartTotal={totalItems} />
@@ -110,10 +104,9 @@ const Layout = () => {
             increaseQty,
             decreaseQty,
             deleteItem,
-            orderComplete,
-            orders,
             address,
             setAddress,
+            createOrder
           }}
         />
       </main>

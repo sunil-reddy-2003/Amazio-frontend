@@ -1,17 +1,30 @@
 import { useState } from "react";
-import {useAuth} from "../context/AuthContext"
-import {useNavigate} from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const SignUp = () => {
   const [signUpData, setSignUpData] = useState({
     fname: "",
     lname: "",
     email: "",
     password: "",
-    mobile:""
+    mobile: "",
   });
 
-  const {setIsLoggedIn}=useAuth();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+
+  const signUpRequest = async () => {
+    try {
+      const request = await axios.post(
+        "http://localhost:9090/api/user/signup",
+        signUpData,
+      );
+      console.log("user registered successfylly:", request.data);
+    } catch (error) {
+      console.log("erroe occurred while registering:", error);
+    }
+    navigate("/log-in");
+  };
 
   return (
     <div className="md:flex  mx-4 my-2">
@@ -21,13 +34,13 @@ const SignUp = () => {
         </p>
       </div>
       <div className=" w-full md:w-[45%]  rounded-r-md bg-gray-800">
-        <form 
+        <form
           className="flex flex-col  text-white h-full p-12 md:px-32"
-          onSubmit={(e)=>{
+          onSubmit={(e) => {
             e.preventDefault();
-            localStorage.setItem("userInfo",JSON.stringify(signUpData));
+            signUpRequest();
           }}
-          >
+        >
           <h1 className="font-bold text-2xl text-white mb-6 text-left">
             Create your account
             <span>
@@ -43,7 +56,7 @@ const SignUp = () => {
               className="peer text-xl  px-6 pt-6 pb-3 rounded-md bg-gray-900 border"
               value={signUpData.fname}
               onChange={(e) => {
-                setSignUpData({...signUpData,fname:e.target.value});
+                setSignUpData({ ...signUpData, fname: e.target.value });
               }}
             ></input>
             <label
@@ -72,7 +85,7 @@ const SignUp = () => {
               className="peer text-xl  px-6 pt-6 pb-3 rounded-md bg-gray-900 border"
               value={signUpData.lname}
               onChange={(e) => {
-                setSignUpData({...signUpData,lname:e.target.value});
+                setSignUpData({ ...signUpData, lname: e.target.value });
               }}
             ></input>
             <label
@@ -101,7 +114,7 @@ const SignUp = () => {
               className="peer text-xl  px-6 pt-6 pb-3 rounded-md bg-gray-900 border"
               value={signUpData.email}
               onChange={(e) => {
-                setSignUpData({...signUpData,email:e.target.value});
+                setSignUpData({ ...signUpData, email: e.target.value });
               }}
             ></input>
             <label
@@ -131,7 +144,7 @@ const SignUp = () => {
               className="peer text-xl  px-6 pt-6 pb-3 rounded-md bg-gray-900 border"
               value={signUpData.password}
               onChange={(e) => {
-                setSignUpData({...signUpData,password:e.target.value});
+                setSignUpData({ ...signUpData, password: e.target.value });
               }}
             ></input>
             <label
@@ -162,7 +175,7 @@ const SignUp = () => {
               maxLength={10}
               value={signUpData.mobile}
               onChange={(e) => {
-                setSignUpData({...signUpData,mobile:e.target.value});
+                setSignUpData({ ...signUpData, mobile: e.target.value });
               }}
             ></input>
             <label
@@ -185,10 +198,6 @@ const SignUp = () => {
           <button
             type="submit"
             className=" rounded-full p-4 bg-white text-black hover:bg-fuchsia-900 hover:text-white cursor-pointer"
-            onClick={(e)=>{
-              setIsLoggedIn((prev)=>!prev);
-              navigate("/");
-            }}
           >
             Sign Up
           </button>

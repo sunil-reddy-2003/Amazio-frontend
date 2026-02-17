@@ -6,6 +6,10 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [redirectAfterLogin, setRedirectAfterLogin] = useState(null);
 
+  const [user,setUser]=useState(null);
+
+
+
   return (
     <AuthContext.Provider
       value={{
@@ -13,6 +17,8 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn,
         redirectAfterLogin,
         setRedirectAfterLogin,
+        setUser,
+        user
       }}
     >
       {children}

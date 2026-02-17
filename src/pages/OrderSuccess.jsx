@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 const OrderSuccess = () => {
-  const [underLine,setUnderLine]=useState(true);
   
   return (
     <div className="flex flex-col items-center justify-center h-90">

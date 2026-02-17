@@ -1,13 +1,16 @@
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import { useAuth } from "../context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  // ✅ destructure children here
   const { isLoggedIn } = useAuth();
+  const navigate=useNavigate()
 
-  if (!isLoggedIn) return <Navigate to="/log-in" replace />;
+  if(!isLoggedIn){
+    navigate("/log-in");
+  }
 
-  return <>{children}</>; // ✅ now children is defined
+  return <>{children}</>; 
 };
 
 export default ProtectedRoute;

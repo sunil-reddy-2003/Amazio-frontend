@@ -29,7 +29,7 @@ const NavBar = (props) => {
         className="flex items-center text-2xl font-bold gap-2 flex-shrink-0 "
       >
         <i className="fa-brands fa-atlassian"></i>
-        <span>Amazon</span>
+        <span>Amazio</span>
       </Link>
 
       {/* search bar */}

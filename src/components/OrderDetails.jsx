@@ -1,5 +1,4 @@
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate,useOutletContext } from "react-router-dom";
 const OrderDetails = (props) => {
   const {
     totalPrice,
@@ -11,7 +10,7 @@ const OrderDetails = (props) => {
     nextStep,
     address,
     orderHeading,
-    showAmtPybl,
+    showAmtPybl
   } = props;
 
   const navigate = useNavigate();

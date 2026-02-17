@@ -1,13 +1,38 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import {useState} from "react";
+import { useState } from "react";
+import axios from "axios";
 
 const LogIn = () => {
-  const { setIsLoggedIn, redirectAfterLogin, setRedirectAfterLogin } =
+  const { setIsLoggedIn, redirectAfterLogin, setRedirectAfterLogin,setUser } =
     useAuth();
   const navigate = useNavigate();
 
-  const [loginData,setLoginData]=useState({email:"",password:""});
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+
+  const postLogin = async () => {
+    try {
+      const request = await axios.post(
+        "http://localhost:9090/api/user/login",
+        loginData,
+      );
+
+      localStorage.setItem("token",request.data.token);
+
+      setUser(request.data.userInfo);
+      
+      setIsLoggedIn(true);
+      if (redirectAfterLogin) {
+        navigate(redirectAfterLogin);
+        setRedirectAfterLogin(null);
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("error while sending request: ", error);
+    }
+  };
+
   return (
     <div className="h-screen flex my-2 mx-4 ">
       {/* Left Side */}
@@ -17,15 +42,16 @@ const LogIn = () => {
 
       {/* Right Side */}
       <div className="w-full md:w-[45%] border-r-2 rounded-r-md bg-gray-800 flex items-center justify-center">
-        <form 
+        <form
           className="w-full max-w-md px-6 py-10"
-          onSubmit={(e)=>{
+          onSubmit={(e) => {
             e.preventDefault();
-            localStorage.setItem("loginData",JSON.stringify(loginData));
-          }}  
-          >
+            postLogin();
+            localStorage.setItem("loginData", JSON.stringify(loginData));
+          }}
+        >
           <h4 className="font-bold text-2xl text-white mb-6 text-left">
-            Log into Amazon
+            Log into Amazio
           </h4>
 
           {/* Email or Mobile number */}
@@ -37,8 +63,8 @@ const LogIn = () => {
               placeholder=" "
               className="peer text-xl  px-6 pt-6 pb-3 rounded-md bg-gray-900 border"
               value={loginData.email}
-              onChange={(e)=>{
-                setLoginData({...loginData,email:e.target.value})
+              onChange={(e) => {
+                setLoginData({ ...loginData, email: e.target.value });
               }}
             />
             <label
@@ -68,8 +94,8 @@ const LogIn = () => {
               placeholder=" "
               className="peer text-xl  px-6 pt-6 pb-3 rounded-md bg-gray-900 border"
               value={loginData.password}
-              onChange={(e)=>{
-                setLoginData({...loginData,password:e.target.value})
+              onChange={(e) => {
+                setLoginData({ ...loginData, password: e.target.value });
               }}
             />
             <label
@@ -94,15 +120,6 @@ const LogIn = () => {
           <button
             type="submit"
             className="w-full rounded-full p-2 mb-3 text-xl text-white bg-slate-950 hover:bg-slate-500 hover:font-bold transition cursor-pointer"
-            onClick={(e) => {
-              setIsLoggedIn(true);
-              if (redirectAfterLogin) {
-                navigate(redirectAfterLogin);
-                setRedirectAfterLogin(null);
-              } else {
-                navigate("/");
-              }
-            }}
           >
             Log in
           </button>

@@ -1,15 +1,16 @@
 import AddressForm from "./AddressForm";
-import { useState } from "react";
 const Address = (props) => {
-  const [isDefault, setDefaultState] = useState(true);
-  const [addressType, setAddressType] = useState("Home");
+  
   const {
     setShowAddressForm,
     mode,
     addressDetails,
-    setShowAddressDetails,
     formData,
     setFormData,
+    isDefault,
+    setDefaultState,
+    addressType,
+    setAddressType
   } = props;
 
   return (
@@ -26,7 +27,7 @@ const Address = (props) => {
         onSubmit={(e) => {
           e.preventDefault();
 
-          const payload = { ...formData, addressType, isDefault };
+          const payload = { ...formData, addressType, defaultAddress:isDefault };
           addressDetails(payload);
           setShowAddressForm(false);
         }}

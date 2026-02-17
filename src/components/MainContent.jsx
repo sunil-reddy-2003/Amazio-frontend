@@ -1,25 +1,23 @@
 import getProducts from "./products";
 import ProductCard from "./ProductCard";
 import { useOutletContext } from "react-router-dom";
-import {useState,useEffect} from "react";
+import { useState, useEffect } from "react";
 
 const MainContent = () => {
   const { searchText } = useOutletContext();
-  const [products, setProducts] = useState([]); 
+  const [products, setProducts] = useState([]);
 
-  // useEffect(()=>{
-  //   getProducts().then((result)=>{
-  //     return setProducts(result);
-  //   })
-  // }, []);
-
-  useEffect(()=>{
-    const getData=async()=>{
-      const data=await getProducts();
-      setProducts(data);
-    }
-    getData();  
-  },[])
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      }
+    };
+    getData();
+  }, []);
 
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchText.toLowerCase()),
