@@ -7,14 +7,14 @@ const CategoryBar = (props) => {
       return setCategory([]);
     }
     return setCategory((prev) => {
-      if (prev.includes(e.target.textContent.toLowerCase())){
+      if (prev.includes(e.target.textContent)){
         const newCat=[...prev];
-        const index=newCat.indexOf(e.target.textContent.toLowerCase());
+        const index=newCat.indexOf(e.target.textContent);
         newCat.splice(index,1);
         
         return newCat;
       }
-      return [...prev, e.target.textContent.toLowerCase()];
+      return [...prev, e.target.textContent];
     });
   };
   const categories = [
@@ -38,7 +38,7 @@ const CategoryBar = (props) => {
                 ${
                   cat.toLowerCase() == "all" && category.length == 0
                     ? "underline decoration-2 underline-offset-4 decoration-red-500"
-                    : category.includes(cat.toLocaleLowerCase())
+                    : category.includes(cat)
                       ? "underline decoration-2 underline-offset-4 decoration-red-500"
                       : ""
                 }`}

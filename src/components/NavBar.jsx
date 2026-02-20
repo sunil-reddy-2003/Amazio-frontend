@@ -28,7 +28,7 @@ const NavBar = (props) => {
     },
     {
       label:"Wallet",
-      route:"/"
+      route:"/payment"
     },
     {
       label:"Logout",
