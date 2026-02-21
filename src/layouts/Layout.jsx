@@ -72,6 +72,7 @@ const Layout = () => {
           },
         },
       );
+      console.log("inside newOrder: ",response);
       setCartItems([]);
       return true;
     } catch (error) {

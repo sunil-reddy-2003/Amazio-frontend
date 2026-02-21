@@ -4,6 +4,7 @@ import Pagination from "./Pagination";
 import { useOutletContext } from "react-router-dom";
 import axios from "axios";
 import React, { useMemo, useState, useEffect, useCallback } from "react";
+import qs from "qs";
 
 const MainContent = () => {
   const { searchText } = useOutletContext();
@@ -11,18 +12,29 @@ const MainContent = () => {
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState([]);
 
-  const [currentPage,setCurrentPage]=useState(0);
-  const [pageSize,setPageSize]=useState(16);
-  const [totalPages,setTotalPages]=useState();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(16);
+  const [totalPages, setTotalPages] = useState();
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get(`http://localhost:9090/api/admin/getAllProducts?page=${currentPage}&size=${pageSize}${category.length>0 ? `&category=${category.join(",")}`:""}`);
+        // const response = await axios.get(`http://localhost:9090/api/admin/getAllProducts?page=${currentPage}&size=${pageSize}${category.length>0 ? `&category=${category.join(",")}` : ""}`);
+        const response = await axios({
+          method: "get",
+          url: "http://localhost:9090/api/admin/getAllProducts",
+          params: {
+            page: currentPage,
+            size: pageSize,
+            search: searchText.trim() || undefined,
+            category: category.length ? category : undefined,
+          },
+          paramsSerializer: (params) => qs.stringify(params, {arrayFormat: "repeat"})});
+
         setProducts(response.data.content);
         setTotalPages(response.data.totalPages);
 
-        console.log(response.data);
+        console.log("inside getData: ", response.data);
       } catch (error) {
         console.error("Failed to fetch products:", error);
       } finally {
@@ -30,24 +42,11 @@ const MainContent = () => {
       }
     };
     getData();
-  }, [currentPage,pageSize,category]);
+  }, [currentPage, pageSize, category, searchText]);
 
-
-  useEffect(()=>{
+  useEffect(() => {
     setCurrentPage(0);
-  },[category])
-
-  const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
-      const matchesSearch =
-        searchText.trim() === "" ||
-        product.name.toLowerCase().includes(searchText.trim().toLowerCase());
-      const matchesCategory =
-        category.length === 0 ||
-        category.some((cat) => cat === product.category);
-      return matchesSearch && matchesCategory;
-    });
-  }, [products, searchText, category]);
+  }, [category]);
 
   return (
     <>
@@ -63,21 +62,21 @@ const MainContent = () => {
           <div className="text-5xl font-bold text-white">
             Loading products...
           </div>
-        ) : filteredProducts.length ? (
-          filteredProducts.map((product) => (
+        ) : products.length ? (
+          products.map((product) => (
             <ProductCard product={product} key={product.id} />
           ))
         ) : (
-          <div className="col-span-full flex items-center justify-center h-full text-gray-300 text-3xl">
+          <div className="col-span-full flex items-center justify-center h-100 text-gray-300 text-3xl">
             {`No products found for ${searchText}`}
           </div>
         )}
       </div>
       <Pagination
-        currentPage={currentPage} 
-        setCurrentPage={setCurrentPage} 
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
         totalPages={totalPages}
-        />
+      />
     </>
   );
 };

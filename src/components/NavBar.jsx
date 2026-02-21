@@ -1,7 +1,6 @@
 import { useCallback, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { debounce } from "lodash";
 
 const NavBar = (props) => {
   const { onSearch, cartTotal } = props;
@@ -9,33 +8,27 @@ const NavBar = (props) => {
   const [profile, setProfile] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useAuth();
   const navigate = useNavigate();
+  const [searchVal, setSearchVal] = useState("");
 
-
-  const handleSearch = useCallback(
-    debounce((value) => {
-      onSearch(value);
-    }, 300),
-    [onSearch],
-  );
-  const profileObj=[
+  const profileObj = [
     {
-      label:"Profile",
-      route:"/profile"
+      label: "Profile",
+      route: "/profile",
     },
     {
-      label:"My Orders",
-      route:"/orders"
+      label: "My Orders",
+      route: "/orders",
     },
     {
-      label:"Wallet",
-      route:"/payment"
+      label: "Wallet",
+      route: "/",
     },
     {
-      label:"Logout",
-      route:"/log-in",
-      action:"Logout"
+      label: "Logout",
+      route: "/log-in",
+      action: "Logout",
     },
-  ]
+  ];
 
   return (
     // mt-2 mx-4 rounded-full
@@ -59,17 +52,42 @@ const NavBar = (props) => {
       </Link>
 
       {/* search bar */}
-      <div className="relative hidden md:flex flex-1  mx-6 ">
-        <input
-          type="text"
-          placeholder="Search for products"
-          aria-label="Search for products"
-          className="border-2  md:w-3/6 p-2 rounded-full"
-          onInput={(e) => {
-            handleSearch(e.target.value);
-          }}
-        ></input>
-        {/* <i className="absolute fa-solid fa-magnifying-glass text-2xl  "></i> */}
+      <div className=" hidden md:flex flex-1  mx-6 ">
+        <div className="relative flex items-center w-140 border-2 rounded-full">
+          <input
+            type="text"
+            value={searchVal}
+            placeholder="Search any product name..."
+            aria-label="Search for products"
+            className="px-8 py-2 rounded-l-full  w-full placeholder:tracking-widest"
+            onChange={(e) => {
+              setSearchVal(e.target.value);
+              if (e.target.value === "") {
+                onSearch("");
+              }
+            }}
+            onKeyDown={(e) => {
+              e.key == "Enter" && onSearch(searchVal);
+            }}
+          ></input>
+          {searchVal && (
+            <div
+              className="absolute right-14 cursor-pointer rounded-full hover:bg-white/40 hover:text-black p-2"
+              onClick={() => {
+                onSearch("");
+                setSearchVal("");
+              }}
+            >
+              <i className="fa-solid fa-xmark"></i>
+            </div>
+          )}
+          <div
+            className="border-l px-4 py-2 hover:bg-white/30 rounded-r-full cursor-pointer"
+            onClick={() => onSearch(searchVal)}
+          >
+            <i className="fa-solid fa-magnifying-glass"></i>
+          </div>
+        </div>
       </div>
 
       {/* Menu */}
@@ -106,9 +124,7 @@ const NavBar = (props) => {
           <button
             className="fa-solid fa-circle-user font-bold text-3xl cursor-pointer"
             aria-label="Account menu"
-            onClick={()=>
-              setProfile((prev) => !prev)
-            }
+            onClick={() => setProfile((prev) => !prev)}
           ></button>
         ) : (
           <div className="flex justify-center items-center gap-4 font-bold flex-shrink-0 ">
@@ -135,30 +151,32 @@ const NavBar = (props) => {
               <h1 className="font-bold text-3xl text-white ">My Account</h1>
               <i
                 className="text-2xl fa-regular fa-circle-xmark cursor-pointer text-red-600 hover:text-green-600"
-                onClick={()=>
-                  setProfile(false)}
+                onClick={() => setProfile(false)}
               ></i>
             </div>
             <ul className="text-black font-bold">
-              
-              {
-                profileObj.map((item)=>{
-                  return <li 
-                    className={item.action?"text-lg px-4 py-2 mb-1 hover:bg-red-400" :"text-lg px-4 py-2 mb-1 hover:bg-gray-400" }
-                    key={item.label}
-                    onClick={
-                      ()=>{
-                        if(item.action){
-                          localStorage.clear();
-                          setIsLoggedIn(false); 
-                        }
-                        navigate(item.route);
-                        setProfile(false);
-                      }
+              {profileObj.map((item) => {
+                return (
+                  <li
+                    className={
+                      item.action
+                        ? "text-lg px-4 py-2 mb-1 hover:bg-red-400"
+                        : "text-lg px-4 py-2 mb-1 hover:bg-gray-400"
                     }
-                    >{item.label}</li>
-                })
-              }
+                    key={item.label}
+                    onClick={() => {
+                      if (item.action) {
+                        localStorage.clear();
+                        setIsLoggedIn(false);
+                      }
+                      navigate(item.route);
+                      setProfile(false);
+                    }}
+                  >
+                    {item.label}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

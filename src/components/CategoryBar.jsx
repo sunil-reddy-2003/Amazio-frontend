@@ -36,7 +36,7 @@ const CategoryBar = (props) => {
             <li
               className={`px-2  w-20 text-center text-white/80 cursor-pointer  hover:underline hover:decoration-2 hover:underline-offset-4 hover:decoration-green-500 active:decoration-red-500
                 ${
-                  cat.toLowerCase() == "all" && category.length == 0
+                  cat== "All" && category.length == 0
                     ? "underline decoration-2 underline-offset-4 decoration-red-500"
                     : category.includes(cat)
                       ? "underline decoration-2 underline-offset-4 decoration-red-500"

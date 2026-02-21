@@ -16,6 +16,7 @@ const LogIn = () => {
         "http://localhost:9090/api/user/login",
         loginData,
       );
+      console.log("inside postLogin: ",request.data);
 
       localStorage.setItem("token",request.data.token);
 
