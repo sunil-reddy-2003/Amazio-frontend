@@ -4,10 +4,11 @@ import { useState } from "react";
 
 const AdminLayout=()=>{
       const [searchText, setSearchText] = useState("");
+
     
     return(
-        <div>
-            <AdminNav onSearch={setSearchText}/>
+        <div className="bg-linear-to-r from-gray-800  to-gray-400">
+            <AdminNav onSearch={setSearchText} />
             <main>
                 <Outlet context={{searchText}}/>
             </main>

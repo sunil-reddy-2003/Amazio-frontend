@@ -18,6 +18,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminContent from "./pages/AdminContent";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import ViewAllProducts from "./pages/ViewAllProducts";
+import UpdateProduct from "./pages/UpdateProduct";
 
 const App = () => {
   return (
@@ -96,6 +97,12 @@ const App = () => {
           <Route path="/viewallproducts" element={
             <AdminProtectedRoute>
               <ViewAllProducts />
+            </AdminProtectedRoute>
+          }>
+          </Route>
+          <Route path="/updateproduct/:id" element={
+            <AdminProtectedRoute>
+              <UpdateProduct />
             </AdminProtectedRoute>
           }>
           </Route>

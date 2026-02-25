@@ -29,8 +29,8 @@ const AdminLogin = () => {
   return (
     <div className="flex  h-screen  ">
       {/* Left Side */}
-      <div className="hidden md:flex w-[55%]    bg-slate-900 items-center justify-center italic font-extrabold text-white text-4xl">
-        "From cart to heart – the journey matters"
+      <div className="hidden md:flex w-[55%]  bg-slate-900 items-center justify-center italic font-extrabold text-white text-3xl p-10">
+        “Leadership is not about being in charge. It’s about taking responsibility.”
       </div>
 
       {/* Right Side */}
@@ -43,8 +43,11 @@ const AdminLogin = () => {
             localStorage.setItem("loginData", JSON.stringify(loginData));
           }}
         >
-          <h4 className="font-bold text-2xl text-white mb-6 text-left">
-            Log into Amazio Admin
+          <h4 className="font-bold text-2xl text-white text-left">
+           ADMINISTRATOR LOGIN
+          </h4>
+          <h4 className="font-semibold text-lg text-white mb-6 text-left">
+           authorized access only
           </h4>
 
           {/* Email or Mobile number */}

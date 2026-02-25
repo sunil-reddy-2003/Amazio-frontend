@@ -1,11 +1,13 @@
 import OrderInfoImageCard from "./OrderInfoImageCard";
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 const OrderInfo = () => {
-  const orderId = window.location.pathname.slice(8);
+    // const orderId = window.location.pathname.slice(8);
+    const {orderId}=useParams();
+
   const [order,setOrder]=useState();
   const [loading, setLoading] = useState(true);
-
 
   useEffect(() => {
     const getOrder = async () => {

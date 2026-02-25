@@ -30,20 +30,20 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-start w-120   m-2 border border-dotted">
+      {/* <div className="flex flex-col items-start w-120   m-2 border border-dotted">
         <h1 className="  font-extrabold text-xl w-[90%] px-4">Address</h1>
-        {/* <span className="mx-6 font-semibold">{userAddress.addressType}</span> */}
+        <span className="mx-6 font-semibold">{userAddress.addressType}</span>
         <div className="text-[14px] font-sans flex flex-col px-6">
-          {/* <p>
+          <p>
             {userAddress.flat + ", "} {userAddress.area + ", "}{" "}
             {userAddress.landmark}
           </p>
           <p>
             {userAddress.city + ", "}
             {userAddress.state + ", "}india - {userAddress.pincode}
-          </p> */}
+          </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

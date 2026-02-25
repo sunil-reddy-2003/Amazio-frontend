@@ -1,6 +1,6 @@
 import { useState } from "react";
 const CategoryBar = (props) => {
-  const { category, setCategory } = props;
+  const { category, setCategory,adminCat } = props;
 
   const itemClick = (e) => {
     if (e.target.textContent === "All") {
@@ -29,7 +29,7 @@ const CategoryBar = (props) => {
     "Toys",
   ];
   return (
-    <div className="sticky top-23  bg-gradient-to-r from-black/100 via-black/60 to-black/80 backdrop-blur-sm px-14 pb-2 text-white text-sm font-thin">
+    <div className={`sticky top-23  backdrop-blur-sm px-14 pb-2 text-white text-sm font-thin ${adminCat ? "bg-gradient-to-r from-gray-900 via-gray-600 to-gray-800" : "bg-gradient-to-r from-black/100 via-black/60 to-black/80"}`}>
       <ul className="flex justify-between">
         {categories.map((cat) => {
           return (

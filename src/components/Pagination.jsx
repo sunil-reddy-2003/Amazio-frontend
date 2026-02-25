@@ -2,11 +2,13 @@ const Pagination = (props) => {
   const { currentPage, setCurrentPage, totalPages } = props;
 
   const prevPage = () => {
-    setCurrentPage((prev) => --prev);
+    setCurrentPage((prev) => prev-1);
   };
   const nextPage = () => {
-    setCurrentPage((prev) => ++prev);
+    setCurrentPage((prev) => prev+1);
   };
+
+  if (!totalPages || totalPages <= 1) return null;
 
   return (
     <div className=" bg-gradient-to-r from-fuchsia-200 via-black/50 to-fuchsia-200 flex justify-center gap-10 py-2">
