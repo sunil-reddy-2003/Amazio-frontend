@@ -64,8 +64,19 @@ Cart → Shipping → Payment (Cash on Delivery) → Order Creation → Orders P
 ---
 
 ## 📂 Project Structure (Frontend)
-<img width="201" height="277" alt="image" src="https://github.com/user-attachments/assets/79f857e5-659d-481b-88a4-f231ab49afb7" />
 
+```bash
+src/
+├── assets/        
+├── components/    
+├── context/       
+├── layouts/       
+├── pages/         
+├── App.css        
+├── App.jsx        
+├── index.css      
+└── main.jsx       
+```
 
 ---
 
