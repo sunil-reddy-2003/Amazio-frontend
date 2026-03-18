@@ -22,7 +22,7 @@ const OrderInfo = () => {
         }
       );
       setOrder(orderResponse.data);
-      console.log("inside orderResponse",orderResponse);
+      // console.log("inside orderResponse",orderResponse);
       }catch(error){
         console.error("error while getting the order:",error);
       }finally{

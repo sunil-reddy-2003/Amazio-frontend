@@ -20,7 +20,43 @@ import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import ViewAllProducts from "./pages/ViewAllProducts";
 import UpdateProduct from "./pages/UpdateProduct";
 
+import { useEffect,useState } from "react";
+import axios from "axios";
+
 const App = () => {
+  
+  const getHealthMsg = async () => {
+    try {
+      const data = await axios({
+        method: "get",
+        url: `${import.meta.env.VITE_API_BASE_URL}/api/health`
+      })
+      console.log( data.data);
+    }
+    catch (error) {
+      console.error("error occurred while checking the health: ", error);
+    }
+  }
+
+  useEffect(() => {
+    let isRunning = false;
+    
+    const timer = setInterval(async () => {
+      if (!isRunning) {
+        isRunning = true;
+        try {
+          await getHealthMsg();
+        } finally {
+          isRunning = false;
+        }
+      }
+    }, 900000);
+
+    getHealthMsg();
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <>
       <Routes>
@@ -84,10 +120,10 @@ const App = () => {
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={
             <AdminProtectedRoute>
-              <AdminContent/>
+              <AdminContent />
             </AdminProtectedRoute>
           }></Route>
-          <Route path="/adminlogin" element={<AdminLogin/>}></Route>
+          <Route path="/adminlogin" element={<AdminLogin />}></Route>
           <Route path="/add-product" element={
             <AdminProtectedRoute>
               <AddProduct />

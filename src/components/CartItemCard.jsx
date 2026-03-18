@@ -6,7 +6,7 @@ const CartItemCard = React.memo((props) => {
       <div className="flex">
         <div className="mr-2 w-[20%] p-2">
           <img
-            src={product.imageUrl}
+            src={`${product.imageUrl}?auto=compress&cs=tinysrgb&w=500&h=500`}
             className="h-50 w-50 object-cover border border-white/20 rounded-sm"
           />
         </div>

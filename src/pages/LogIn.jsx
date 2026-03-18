@@ -1,17 +1,15 @@
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import axios from "axios";
-import { times } from "lodash";
 
 const LogIn = () => {
-  const { setIsLoggedIn, redirectAfterLogin, setRedirectAfterLogin, setUser } =
-    useAuth();
+  const { setIsLoggedIn,setJustLoggedIn, redirectAfterLogin, setRedirectAfterLogin, setUser } =useAuth();
   const navigate = useNavigate();
-
   const [loginData, setLoginData] = useState({ email: "", password: "" });
-
   const [error, setError] = useState(false);
+  const [message,setMessage]=useState("");
+
   const postLogin = async () => {
     try {
       const request = await axios.post(
@@ -19,22 +17,28 @@ const LogIn = () => {
         `${import.meta.env.VITE_API_BASE_URL}/api/user/login`,
         loginData,
       );
-      console.log("inside postLogin: ", request.data);
+      // console.log("inside postLogin: ", request);
 
-      localStorage.setItem("token", request.data.token);
+      if(request.data.Success){
+        localStorage.setItem("token", request.data.token);
+        setUser(request.data.user);
 
-      setUser(request.data.userInfo);
-
-      setIsLoggedIn(true);
-      if (redirectAfterLogin) {
-        navigate(redirectAfterLogin);
-        setRedirectAfterLogin(null);
-      } else {
-        navigate("/");
+        setIsLoggedIn(true);
+        setJustLoggedIn(true);
+        if (redirectAfterLogin) {
+          navigate(redirectAfterLogin);
+          setRedirectAfterLogin(null);
+        } else {
+          navigate("/");
+        }
+      }else{
+        setError(true);
+        setMessage(request.data.message);
+        // console.log(request.data.message);
       }
+    
     } catch (error) {
-      setError(true);
-      console.error("error while sending request: ", error);
+      console.error("error occurred while sending request: ",error);
     }
   };
 
@@ -55,8 +59,7 @@ const LogIn = () => {
 
       {error && (<div className=" w-full absolute top-25 z-1 flex items-center justify-center">
         <div className=" flex items-center justify-center gap-2  rounded-full bg-white px-10 py-2">
-          <h3 className="text-xl font-semibold text-red-800">Login Failed</h3>
-          <i className="text-2xl fa-regular fa-circle-xmark  text-red-800"></i>
+          <h3 className="text-xl font-bold text-red-500">{message}</h3>
         </div>
       </div>)}
 

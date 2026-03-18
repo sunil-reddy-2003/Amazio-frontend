@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -10,8 +10,19 @@ const SignUp = () => {
     password: "",
     mobile: "",
   });
-
   const navigate = useNavigate();
+
+  const [show,setShow]=useState(false);
+  const [message,setMessage]=useState("");
+
+  useEffect(()=>{
+    const timer=setTimeout(()=>{
+      setShow(false);
+    },1500);
+
+    return ()=>clearTimeout(timer);
+  },[show]);
+
 
   const signUpRequest = async () => {
     try {
@@ -20,15 +31,31 @@ const SignUp = () => {
         `${import.meta.env.VITE_API_BASE_URL}/api/user/signup`,
         signUpData,
       );
-      console.log("user registered successfylly:", request.data);
+      
+      if(request.data.Success){
+        // console.log(request.data.message);
+        navigate("/log-in");
+      }else{
+        // console.log(request.data.message);
+        setMessage(request.data.message);
+        setShow(true);
+      }
+      
     } catch (error) {
-      console.log("erroe occurred while registering:", error);
+      console.log("error occurred while registering:", error);
     }
-    navigate("/log-in");
+    
   };
 
   return (
     <div className="md:flex ">
+
+      {show && (<div className=" w-full absolute top-25 z-1 flex items-center justify-center">
+        <div className=" flex items-center justify-center gap-2  rounded-full bg-white px-10 py-2">
+          <h3 className="text-xl font-bold text-red-500">{message}</h3>
+        </div>
+      </div>)}
+
       <div className="hidden md:flex justify-center items-center md:w-[55%]   bg-fuchsia-900 ">
         <p className="font-extrabold text-white text-4xl">
           Sign up. Show up. Level up

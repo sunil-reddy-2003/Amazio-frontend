@@ -20,7 +20,7 @@ const Orders = () => {
             }
           }
         );
-        console.log("inside ordersResponse: ",ordersResponse);
+        // console.log("inside ordersResponse: ",ordersResponse);
         setOrders(ordersResponse.data);
       } catch (error) {
         console.error("error while getting the orders response", error);

@@ -198,7 +198,7 @@ const Shipping = () => {
                   {cartItems.map((item) => (
                     <div key={item.id} className="flex m-2 w-80">
                       <img
-                        src={item.imageUrl}
+                        src={`${item.imageUrl}?auto=compress&cs=tinysrgb&w=500&h=500`}
                         className="rounded-md object-cover h-[100px] w-[100px]"
                       />
                       <div className="p-2">

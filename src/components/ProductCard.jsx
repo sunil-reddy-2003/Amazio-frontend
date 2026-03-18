@@ -8,7 +8,7 @@ const ProductCard = React.memo((props) => {
       {" "}
       {/*border-[1px] rounded-4xl  transition delay-50 duration-600 ease-in-out hover:-translate-y-1 hover:scale-110  */}
       <img
-        src={`${product.imageUrl}?auto=compress&cs=tinysrgb&w=700&h=700`}
+        src={`${product.imageUrl}?auto=compress&cs=tinysrgb&w=500&h=500`}
         loading="lazy"
         alt={product.name}
         className="w-70 h-70 object-cover border-2 border-black rounded-xl"
