@@ -50,7 +50,7 @@ const App = () => {
           isRunning = false;
         }
       }
-    }, 900000);
+    }, 300000);
 
     getHealthMsg();
 
