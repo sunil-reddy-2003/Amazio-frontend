@@ -31,7 +31,7 @@ const App = () => {
         method: "get",
         url: `${import.meta.env.VITE_API_BASE_URL}/api/health`
       })
-      console.log( data.data);
+      // console.log( data.data);
     }
     catch (error) {
       console.error("error occurred while checking the health: ", error);

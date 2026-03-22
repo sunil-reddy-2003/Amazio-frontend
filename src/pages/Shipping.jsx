@@ -1,15 +1,18 @@
 import OrderDetails from "../components/OrderDetails";
 import Address from "../components/Address";
-import { useState } from "react";
-import { useOutletContext,Link } from "react-router-dom";
-import { useEffect } from "react";
-
+import { useState, useEffect, use } from "react";
+import { useOutletContext, Link } from "react-router-dom";
+import axios from "axios";
+import { add } from "lodash";
+import UserAddress from "../components/UserAddress";
 const Shipping = () => {
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [showAddressDetails, setShowAddressDetails] = useState(false);
-  const { cartItems, address, setAddress } = useOutletContext();
-
+  const { cartItems, address, setAddress, addressList, setAddressList } = useOutletContext();
   const [formMode, setFormMode] = useState("");
+  const [showSelect, setShowSelect] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [updateId, setUpdateId] = useState(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -25,11 +28,62 @@ const Shipping = () => {
   const [isDefault, setDefaultState] = useState(true);
   const [addressType, setAddressType] = useState("Home");
 
-  const addressDetails = (payload) => {
-    window.localStorage.setItem("addressStorage", JSON.stringify(payload));
-    setAddress(payload);
-    setShowAddressDetails(true);
-  };
+
+  const saveAddress = async (payload) => {
+    try {
+      const response = await axios({
+        method: "post",
+        url: `${import.meta.env.VITE_API_BASE_URL}/api/user/saveaddress`,
+        data: payload,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })
+
+      // console.log("inside post address: ",response.data);
+      setAddress(payload);
+      setShowAddressDetails(true);
+      setRefresh(prev => !prev);
+
+    } catch (error) {
+      console.error("error occurred while saving address: " ,error);
+    }
+
+  }
+
+  const updateAddress = async (updateId, updateAddress) => {
+    try {
+      const response = await axios({
+      method: "put",
+      url: `${import.meta.env.VITE_API_BASE_URL}/api/user/updateaddress/${updateId}`,
+      data: updateAddress,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+
+    // console.log("inside updateAddress: "+response.data);
+    setRefresh(prev => !prev);
+    } catch (error) {
+      console.error("error occurred while updating address: ",error);
+    }
+  }
+
+  const deleteAddress = async (addressId) => {
+    try {
+      const response = await axios({
+      method: "delete",
+      url: `${import.meta.env.VITE_API_BASE_URL}/api/user/deleteaddress/${addressId}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+    setRefresh(prev=>!prev);
+    } catch (error) {
+      console.error("error occurred while deleting the address: ",error);
+    }
+  }
+
 
   if (!cartItems.length) {
     return (
@@ -41,15 +95,6 @@ const Shipping = () => {
       </div>
     );
   }
-  useEffect(() => {
-    const savedAddress = JSON.parse(localStorage.getItem("addressStorage"));
-    if (savedAddress) {
-      setAddress(savedAddress);
-      setShowAddressDetails(true);
-    } else {
-      setShowAddressDetails(false);
-    }
-  }, []);
 
   const months = [
     "January",
@@ -71,6 +116,41 @@ const Shipping = () => {
   const btnName = "PROCEED TO PAYMENT";
   const orderHeading = "Order Details";
   const nextStep = "/payment";
+
+  useEffect(() => {
+    const getAddresses = async () => {
+      try {
+        const response = await axios({
+          method: "get",
+          url: `${import.meta.env.VITE_API_BASE_URL}/api/user/getaddress`,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        // console.log("inside get address: ", response.data);
+        if (response.data.status) {
+
+          const addresses = response.data.addresses;
+          setAddressList(addresses);
+
+          const selected = addresses.find((a) => {
+            return a.defaultAddress == true
+          }) || addresses[0] || null;
+
+          setAddress(selected);
+          setShowAddressDetails(true);
+        } else {
+          setShowAddressDetails(false);
+          setAddressList([]);
+          setAddress(null);
+        }
+      } catch (error) {
+        console.error("error occurred while fetching addresses: ", error.response);
+      }
+    }
+    getAddresses();
+  }, [refresh]);
+
 
   return (
     <div className="flex gap-4  p-2 relative">
@@ -127,7 +207,7 @@ const Shipping = () => {
                       {address.addressType}
                     </div>
                   </div>
-                  {isDefault && (
+                  {address.defaultAddress && (
                     <p className="font-bold text-slate-600 text-[14px]">
                       Default
                     </p>
@@ -142,7 +222,7 @@ const Shipping = () => {
                       {address.city + ", "}
                       {address.state + ", "}
                     </p>
-                    <p>india - {address.pincode}</p>
+                    <p>India - {address.pincode}</p>
                     <p>
                       Phone :{" "}
                       <span className="font-bold">{address.mobile}</span>
@@ -152,21 +232,7 @@ const Shipping = () => {
                     <button
                       className="font-semibold text-red-600 cursor-pointer hover:text-black"
                       onClick={() => {
-                        setFormMode("Change Address");
-                        setFormData({
-                          name: address.name || "",
-                          mobile: address.mobile || "",
-                          pincode: address.pincode || "",
-                          area: address.area || "",
-                          flat: address.flat || "",
-                          landmark: address.landmark || "",
-                          city: address.city || "",
-                          state: address.state || "",
-                        });
-
-                        setDefaultState(address.isDefault ?? true);
-                        setAddressType(address.addressType || "Home");
-                        setShowAddressForm(true);
+                        setShowSelect(true);
                       }}
                     >
                       Change Address
@@ -224,12 +290,11 @@ const Shipping = () => {
           orderHeading={orderHeading}
         />
         {showAddressForm && (
-          <div className="fixed top-0 right-0 h-screen flex justify-end z-50 backdrop-blur-sm w-full">
+          <div className="fixed top-0 right-0 h-screen flex justify-end z-55 backdrop-blur-sm w-full">
             <div className="p-6 overflow-auto shadow-xl bg-white">
               <Address
                 setShowAddressForm={setShowAddressForm}
                 mode={formMode}
-                addressDetails={addressDetails}
                 setShowAddressDetails={setShowAddressDetails}
                 formData={formData}
                 setFormData={setFormData}
@@ -238,12 +303,34 @@ const Shipping = () => {
                 setDefaultState={setDefaultState}
                 addressType={addressType}
                 setAddressType={setAddressType}
+                saveAddress={saveAddress}
+                updateId={updateId}
+                updateAddress={updateAddress}
               />
             </div>
           </div>
         )}
       </div>
+      {
+        showSelect && (
+          <div className="fixed top-0 left-0 z-50 bg-white/10 h-full w-full backdrop-blur-md">
+            <UserAddress
+              addressList={addressList}
+              setShowSelect={setShowSelect}
+              setAddress={setAddress}
+              setShowAddressForm={setShowAddressForm}
+              setFormMode={setFormMode}
+              setFormData={setFormData}
+              setAddressType={setAddressType}
+              setDefaultState={setDefaultState}
+              setUpdateId={setUpdateId}
+              deleteAddress={deleteAddress}
+            />
+          </div>
+        )
+      }
     </div>
   );
-};
+}
+
 export default Shipping;

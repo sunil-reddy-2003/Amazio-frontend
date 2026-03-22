@@ -1,17 +1,21 @@
 import AddressForm from "./AddressForm";
+import axios from "axios";
 const Address = (props) => {
   
   const {
     setShowAddressForm,
     mode,
-    addressDetails,
     formData,
     setFormData,
     isDefault,
     setDefaultState,
     addressType,
-    setAddressType
+    setAddressType,
+    saveAddress,
+    updateId,
+    updateAddress
   } = props;
+
 
   return (
     <div className="">
@@ -26,9 +30,12 @@ const Address = (props) => {
         className="flex flex-col bg-white p-4 w-[400px]"
         onSubmit={(e) => {
           e.preventDefault();
-
           const payload = { ...formData, addressType, defaultAddress:isDefault };
-          addressDetails(payload);
+          if(mode==="Add Address"){
+            saveAddress(payload);
+          }else if(mode==="Edit Address"){
+            updateAddress(updateId,payload)
+          }
           setShowAddressForm(false);
         }}
       >

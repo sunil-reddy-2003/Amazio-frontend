@@ -12,6 +12,7 @@ const Layout = () => {
 
   const [cartItems, setCartItems] = useState([]);
   const [address, setAddress] = useState({});
+  const [addressList,setAddressList]=useState([]);
 
   const addToCart = useCallback((product) => {
     setCartItems((prevCart) => {
@@ -108,8 +109,10 @@ const Layout = () => {
       totalItems,
       totalPrice,
       fees,
+      addressList,
+      setAddressList
     }),
-    [searchText, cartItems, address, totalItems, totalPrice, fees,createOrder],
+    [searchText, cartItems, address, totalItems, totalPrice, fees,createOrder,addressList],
   );
 
 
