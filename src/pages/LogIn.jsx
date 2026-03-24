@@ -79,7 +79,6 @@ const LogIn = () => {
           onSubmit={(e) => {
             e.preventDefault();
             postLogin();
-            localStorage.setItem("loginData", JSON.stringify(loginData));
           }}
         >
           <h4 className="font-bold text-2xl text-white mb-6 text-left">

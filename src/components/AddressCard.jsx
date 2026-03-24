@@ -7,7 +7,7 @@ const AddressCard = (props) => {
                     <h3 className="font-bold pr-2 text-[15px] tracking-wider">
                         {address.name}
                     </h3>
-                    <div className="border px-2 rounded-md text-xs ">
+                    <div className="border px-2 rounded-md text-xs flex items-center justify-center ">
                         {address.addressType}
                     </div>
                 </div>
