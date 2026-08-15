@@ -11,16 +11,23 @@ const Orders = () => {
   useEffect(() => {
     const getOrders = async () => {
       try {
+        // Handle different user ID field names from backend
+        const userId = user?._id || user?.id || user?.userId;
+        
+        if (!userId) {
+          console.error("User ID not found in auth context");
+          setLoading(false);
+          return;
+        }
+
         const ordersResponse = await axios.get(
-          // `http://localhost:9090/api/order/getOrders/${user.userId}`,
-          `${import.meta.env.VITE_API_BASE_URL}/api/order/getOrders/${user.userId}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/order/getOrders/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`
             }
           }
         );
-        // console.log("inside ordersResponse: ",ordersResponse);
         setOrders(ordersResponse.data);
       } catch (error) {
         console.error("error while getting the orders response", error);
@@ -28,8 +35,13 @@ const Orders = () => {
         setLoading(false);
       }
     };
-    getOrders();
-  }, []);
+    
+    if (user) {
+      getOrders();
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
 
     if (loading) return <div className="flex items-center justify-center h-90 text-5xl font-bold text-white">Loading order details..</div>
 
