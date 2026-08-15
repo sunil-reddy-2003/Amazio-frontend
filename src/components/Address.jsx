@@ -19,15 +19,15 @@ const Address = (props) => {
 
   return (
     <div className="">
-      <div className="flex justify-between px-6 ">
-        <h1 className="text-2xl font-bold">{mode}</h1>
+      <div className="flex justify-between px-3 sm:px-4 md:px-6 gap-2">
+        <h1 className="text-lg sm:text-xl md:text-2xl font-bold">{mode}</h1>
         <i
-          className="text-2xl fa-regular fa-circle-xmark cursor-pointer hover:text-red-600"
+          className="text-lg sm:text-xl md:text-2xl fa-regular fa-circle-xmark cursor-pointer hover:text-red-600 transition-colors"
           onClick={() => setShowAddressForm(false)}
         ></i>
       </div>
       <form
-        className="flex flex-col bg-white p-4 w-[400px]"
+        className="flex flex-col bg-white p-3 sm:p-4 md:p-6 w-full sm:w-96 md:w-[400px]"
         onSubmit={(e) => {
           e.preventDefault();
           const payload = { ...formData, addressType, defaultAddress:isDefault };

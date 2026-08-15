@@ -153,23 +153,23 @@ const Shipping = () => {
 
 
   return (
-    <div className="flex gap-4  p-2 relative">
-      <div className=" p-8 w-[75%] ">
-        <div className=" flex flex-col bg-white/30 rounded-t-lg">
-          <div className=" py-6 px-2 ">
-            <div className="flex px-8">
-              <i className="fa-solid fa-location-dot text-4xl "></i>
+    <div className="flex flex-col lg:flex-row gap-2 sm:gap-3 md:gap-4 lg:gap-4 p-2 sm:p-3 md:p-4 lg:p-2 relative">
+      <div className="p-3 sm:p-4 md:p-6 lg:p-8 w-full lg:w-[75%]">
+        <div className="flex flex-col bg-white/30 rounded-t-lg">
+          <div className="py-4 sm:py-5 md:py-6 px-2 sm:px-4 md:px-6 lg:px-8">
+            <div className="flex gap-2 sm:gap-3 md:gap-4">
+              <i className="fa-solid fa-location-dot text-2xl sm:text-3xl md:text-4xl flex-shrink-0"></i>
               <div>
-                <h2 className="text-2xl font-bold">Delivery Address</h2>
-                <p className="font-light">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold">Delivery Address</h2>
+                <p className="font-light text-xs sm:text-sm md:text-base">
                   We will deliver your order to this address
                 </p>
               </div>
             </div>
             {!showAddressDetails && (
-              <div className=" px-8">
+              <div className="px-4 sm:px-6 md:px-8 mt-3">
                 <button
-                  className="font-bold text-green-600 cursor-pointer hover:text-black"
+                  className="font-bold text-green-600 cursor-pointer hover:text-black text-sm sm:text-base transition-colors"
                   onClick={() => {
                     setFormMode("Add Address");
 
@@ -197,10 +197,10 @@ const Shipping = () => {
           </div>
           {showAddressDetails && (
             <>
-              <div className="flex items-center justify-between px-8 py-2">
-                <div className="px-6">
-                  <div className="flex">
-                    <h3 className="font-bold pr-2 text-[15px]">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-3 sm:px-6 md:px-8 py-2 gap-3 sm:gap-0">
+                <div className="px-2 sm:px-4 md:px-6 flex-1">
+                  <div className="flex gap-2 flex-wrap">
+                    <h3 className="font-bold text-sm sm:text-base">
                       {address.name}
                     </h3>
                     <div className="border px-2 rounded-lg text-xs">
@@ -208,11 +208,11 @@ const Shipping = () => {
                     </div>
                   </div>
                   {address.defaultAddress && (
-                    <p className="font-bold text-slate-600 text-[14px]">
+                    <p className="font-bold text-slate-600 text-xs sm:text-sm">
                       Default
                     </p>
                   )}
-                  <div className="text-[14px] font-sans">
+                  <div className="text-xs sm:text-sm md:text-base font-sans mt-2 space-y-1">
                     <p>
                       {address.flat + ", "}
                       {address.area + ", "}
@@ -224,13 +224,13 @@ const Shipping = () => {
                     </p>
                     <p>India - {address.pincode}</p>
                     <p>
-                      Phone :{" "}
+                      Phone:{" "}
                       <span className="font-bold">{address.mobile}</span>
                     </p>
                   </div>
-                  <div className="">
+                  <div className="mt-2">
                     <button
-                      className="font-semibold text-red-600 cursor-pointer hover:text-black"
+                      className="font-semibold text-red-600 cursor-pointer hover:text-black text-xs sm:text-sm transition-colors"
                       onClick={() => {
                         setShowSelect(true);
                       }}
@@ -239,9 +239,9 @@ const Shipping = () => {
                     </button>
                   </div>
                 </div>
-                <div className="flex items-center pr-16">
-                  <div className="border border-dotted p-4">
-                    <p className="text-green-700 font-bold ">
+                <div className="flex items-center px-2 sm:px-4 md:px-8 w-full sm:w-auto">
+                  <div className="border border-dotted p-2 sm:p-3 md:p-4 text-xs sm:text-sm md:text-base">
+                    <p className="text-green-700 font-bold">
                       Cash on delivery available
                     </p>
                     <p>
@@ -250,39 +250,40 @@ const Shipping = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col py-2 px-10  rounded-b-lg border-t border-gray-200 ">
-                <div className="flex items-center gap-4 ">
-                  <i className="fa-regular fa-truck text-3xl "></i>
+              <div className="flex flex-col py-2 sm:py-3 md:py-4 px-4 sm:px-6 md:px-10 rounded-b-lg border-t border-gray-200">
+                <div className="flex items-start sm:items-center gap-2 sm:gap-4">
+                  <i className="fa-regular fa-truck text-2xl sm:text-3xl flex-shrink-0"></i>
                   <div>
-                    <h2 className="text-xl text-black font-bold">
+                    <h2 className="text-base sm:text-lg md:text-xl text-black font-bold">
                       Expected Delivery
                     </h2>
-                    <p className="">Estimated delivery dates for your order</p>
+                    <p className="text-xs sm:text-sm">Estimated delivery dates for your order</p>
                   </div>
                 </div>
-                <div className="grid grid-cols-3 p-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 p-2 sm:p-3 md:p-4 gap-2 sm:gap-3 md:gap-4">
                   {cartItems.map((item) => (
-                    <div key={item.id} className="flex m-2 w-80">
+                    <div key={item.id} className="flex gap-2 sm:gap-3">
                       <img
                         src={`${item.imageUrl}?auto=compress&cs=tinysrgb&w=500&h=500`}
-                        className="rounded-md object-cover h-[100px] w-[100px]"
+                        className="rounded-md object-cover h-16 sm:h-20 md:h-24 w-16 sm:w-20 md:w-24 flex-shrink-0"
+                        alt={item.name}
                       />
-                      <div className="p-2">
-                        <p className="font-medium">
+                      <div className="p-1 sm:p-2 flex-1">
+                        <p className="font-medium text-xs sm:text-sm md:text-base">
                           {date.getDate()} {months[date.getMonth()]}
                         </p>
-                        <p className="text-sm">{item.name}</p>
+                        <p className="text-xs sm:text-sm line-clamp-2">{item.name}</p>
                       </div>
                     </div>
                   ))}
-                  {cartItems.length === 0 && <p>Your cart is empty.</p>}
+                  {cartItems.length === 0 && <p className="text-xs sm:text-sm">Your cart is empty.</p>}
                 </div>
               </div>
             </>
           )}
         </div>
       </div>
-      <div className="relative  py-8 pr-4 w-[25%]">
+      <div className="relative py-4 sm:py-6 md:py-8 lg:py-8 px-2 sm:px-3 md:px-4 lg:pr-4 w-full lg:w-[25%]">
         <OrderDetails
           btnName={btnName}
           address={address}

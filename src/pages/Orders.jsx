@@ -35,14 +35,14 @@ const Orders = () => {
 
 
   return (
-    <div className="flex flex-col items-center ">
+    <div className="flex flex-col items-center w-full">
       {orders.length > 0 ? (
         <>
-          <div className="flex flex-col items-center  text-white py-4 mb-2 w-full tracking-widest bg-linear-to-r from-black/90 to-black/90">
-            <h1 className="font-bold text-4xl">My Orders</h1>
-            <p> All your past and current orders in one place</p>
+          <div className="flex flex-col items-center text-white py-3 sm:py-4 md:py-6 mb-2 sm:mb-3 md:mb-4 w-full tracking-widest bg-linear-to-r from-black/90 to-black/90">
+            <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center">My Orders</h1>
+            <p className="text-xs sm:text-sm md:text-base text-center">All your past and current orders in one place</p>
           </div>
-          <div className="flex flex-col items-center w-[65%]   ">
+          <div className="flex flex-col items-center w-full sm:w-4/5 md:w-[65%] px-2 sm:px-4">
             {orders &&
               orders.map((order) => {
                 return <OrderCard key={order.orderId} order={order}/>;
@@ -50,9 +50,9 @@ const Orders = () => {
           </div>
         </>
       ) : (
-        <div className="flex flex-col items-center  justify-center text-black w-[65%] h-120 text-4xl font-bold tracking-widest ">
+        <div className="flex flex-col items-center justify-center text-black w-full sm:w-4/5 md:w-[65%] h-60 sm:h-80 md:h-120 text-xl sm:text-2xl md:text-4xl font-bold tracking-widest text-center px-4">
           "Looks like you haven't placed any orders yet."
-          <Link to="/" className="text-lg underline text-red-700 tracking-wide">
+          <Link to="/" className="text-base sm:text-lg md:text-lg underline text-red-700 tracking-wide mt-4">
             Start shopping now!
           </Link>
         </div>

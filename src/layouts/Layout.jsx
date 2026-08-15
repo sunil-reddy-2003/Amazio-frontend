@@ -2,36 +2,50 @@ import { Outlet } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import BackToTop from "../components/BackToTop";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 
 import axios from "axios";
 
+const getProductId = (product) => product?.id ?? product?._id ?? product?.productId;
+
 const Layout = () => {
   const [searchText, setSearchText] = useState("");
-
-
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const storedCart = localStorage.getItem("cartItems");
+      return storedCart ? JSON.parse(storedCart) : [];
+    } catch {
+      return [];
+    }
+  });
   const [address, setAddress] = useState({});
-  const [addressList,setAddressList]=useState([]);
+  const [addressList, setAddressList] = useState([]);
+
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const addToCart = useCallback((product) => {
+    const productId = getProductId(product);
+    if (!productId) return;
+
     setCartItems((prevCart) => {
-      const existingProduct = prevCart.find((p) => p.id === product.id);
+      const existingProduct = prevCart.find((p) => getProductId(p) === productId);
 
       if (existingProduct) {
         return prevCart.map((p) =>
-          p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p,
+          getProductId(p) === productId ? { ...p, quantity: (p.quantity || 0) + 1 } : p,
         );
-      } else {
-        return [...prevCart, { ...product, quantity: 1 }];
       }
+
+      return [...prevCart, { ...product, quantity: 1 }];
     });
   }, []);
 
   const increaseQty = useCallback((id) => {
     setCartItems((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
+        getProductId(item) === id ? { ...item, quantity: (item.quantity || 0) + 1 } : item,
       ),
     );
   }, []);
@@ -39,7 +53,7 @@ const Layout = () => {
   const decreaseQty = useCallback((id) => {
     setCartItems((prev) =>
       prev.map((item) =>
-        item.id === id && item.quantity > 1
+        getProductId(item) === id && (item.quantity || 1) > 1
           ? { ...item, quantity: item.quantity - 1 }
           : item,
       ),
@@ -47,41 +61,42 @@ const Layout = () => {
   }, []);
 
   const deleteItem = useCallback((id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    setCartItems((prev) => prev.filter((item) => getProductId(item) !== id));
   }, []);
 
     
 
   const createOrder = useCallback(
     async (selectedPaymentMethod) => {
-    const products = cartItems.map((prod) => {
-      return { productId: prod.id, quantity: prod.quantity };
-    });
-    const newOrder = {
-      orderItem: products,
-      address: address,
-      paymentMethod: selectedPaymentMethod,
-    };
+      const products = cartItems.map((prod) => {
+        return { productId: getProductId(prod), quantity: prod.quantity };
+      });
+      const newOrder = {
+        orderItem: products,
+        address: address,
+        paymentMethod: selectedPaymentMethod,
+      };
 
-    try {
-      const response = await axios.post(
-        // "http://localhost:9090/api/order/createOrder",
-        `${import.meta.env.VITE_API_BASE_URL}/api/order/createOrder`,
-        newOrder,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+      try {
+        await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/order/createOrder`,
+          newOrder,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           },
-        },
-      );
-      // console.log("inside newOrder: ",response);
-      setCartItems([]);
-      return true;
-    } catch (error) {
-      console.error("Error creating order:", error);
-      return false;
-    }
-  },[cartItems, address,paymentLabels]);
+        );
+
+        setCartItems([]);
+        return true;
+      } catch (error) {
+        console.error("Error creating order:", error);
+        return false;
+      }
+    },
+    [cartItems, address],
+  );
 
   const cartTotals = useMemo(() => {
     const totalPrice = cartItems.reduce(

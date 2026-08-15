@@ -74,9 +74,9 @@ const MainContent = () => {
   return (
     <>
 
-      {show && (<div className=" w-full absolute top-30 z-1 flex items-center justify-center">
-        <div className=" flex items-center justify-center gap-2  rounded-full bg-white px-10 py-2">
-          <h3 className="text-xl font-bold text-green-500">Welcome back, {user.fname}!! </h3>
+      {show && (<div className="w-full absolute top-20 sm:top-24 md:top-30 z-10 flex items-center justify-center px-2">
+        <div className="flex items-center justify-center gap-2 rounded-full bg-white px-4 sm:px-8 md:px-10 py-1 sm:py-2">
+          <h3 className="text-xs sm:text-sm md:text-xl font-bold text-green-500">Welcome back, {user.fname}!!</h3>
         </div>
       </div>)}
 
@@ -86,12 +86,12 @@ const MainContent = () => {
       <div
         className={
           loading
-            ? "flex items-center justify-center h-90  "
-            : `grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full px-8 py-4`
+            ? "flex items-center justify-center h-80 sm:h-90 md:h-full"
+            : `grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 w-full px-2 sm:px-4 md:px-8 py-3 sm:py-4 md:py-6`
         }
       >
         {loading ? (
-          <div className="text-5xl font-bold text-white">
+          <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
             Loading products...
           </div>
         ) : products.length ? (
@@ -99,7 +99,7 @@ const MainContent = () => {
             <ProductCard product={product} key={product.id} />
           ))
         ) : (
-          <div className="col-span-full flex items-center justify-center h-100 text-gray-300 text-3xl">
+          <div className="col-span-full flex items-center justify-center h-80 sm:h-90 md:h-100 text-gray-300 text-lg sm:text-2xl md:text-3xl px-2 text-center">
             {`No products found for ${searchText}`}
           </div>
         )}

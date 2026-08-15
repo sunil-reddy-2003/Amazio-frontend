@@ -15,8 +15,8 @@ const Cart = () => {
   const orderHeading="Order Details";
 
   return cartItems.length !== 0 ? (
-    <div className="flex ">
-      <div className="w-[75%] p-4 m-4">
+    <div className="flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-0">
+      <div className="w-full lg:w-[75%] p-2 sm:p-3 md:p-4 lg:m-4">
         {cartItems.map((product) => {
           return (
             <CartItemCard
@@ -29,7 +29,7 @@ const Cart = () => {
           );
         })}
       </div>
-      <div className="relative py-8 pr-4 w-[25%]">
+      <div className="w-full lg:w-[25%] relative py-4 md:py-6 lg:py-8 px-2 sm:px-3 md:px-4 lg:pr-4">
         <OrderDetails
           isLoggedIn={isLoggedIn}
           setRedirectAfterLogin={setRedirectAfterLogin}
@@ -40,10 +40,10 @@ const Cart = () => {
       </div>
     </div>
   ) : (
-    <div className="flex flex-col justify-center items-center h-84 text-center text-xl font-semibold text-gray-700 m-10">
-      <div className="fa-solid fa-cart-arrow-down fa-shake text-black text-8xl p-4 md:block"></div>
+    <div className="flex flex-col justify-center items-center h-60 sm:h-72 md:h-84 text-center text-base sm:text-lg md:text-xl font-semibold text-gray-700 m-4 sm:m-8 md:m-10">
+      <div className="fa-solid fa-cart-arrow-down fa-shake text-black text-6xl sm:text-7xl md:text-8xl p-2 sm:p-4"></div>
 
-      <p className="text-black font-bold text-md ">
+      <p className="text-black font-bold text-sm sm:text-base md:text-lg mt-4">
         Your cart is looking a little empty{" "}
         <span>
           <i className="fa-regular fa-face-frown"></i>
@@ -51,7 +51,7 @@ const Cart = () => {
       </p>
 
       <button
-        className="m-4 px-18 py-2 bg-black text-sm border-black text-white rounded hover:bg-green-800 "
+        className="m-2 sm:m-4 px-6 sm:px-12 md:px-18 py-2 bg-black text-xs sm:text-sm border-black text-white rounded hover:bg-green-800 transition-colors"
         onClick={() => {
           navigate("/");
         }}

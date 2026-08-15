@@ -1,15 +1,19 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem("token"));
   const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [redirectAfterLogin, setRedirectAfterLogin] = useState(null);
 
-  const [user,setUser]=useState(null);
+  const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  const [isAdmin,setIsAdmin]=useState(false);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(Boolean(token));
+  }, []);
 
   return (
     <AuthContext.Provider

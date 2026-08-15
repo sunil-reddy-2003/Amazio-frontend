@@ -36,19 +36,19 @@ const OrderInfo = () => {
 
 
   return (
-    <div className="m-4 flex  justify-center ">
-      <div className=" w-[70%] rounded-md bg-white/40 p-6 ">
-        <h1 className="text-3xl font-extrabold">Order details</h1>
-        <h2 className="px-2 mb-2">
+    <div className="m-2 sm:m-4 md:m-6 flex justify-center">
+      <div className="w-full sm:w-[85%] md:w-[80%] lg:w-[70%] rounded-md bg-white/40 p-3 sm:p-4 md:p-6">
+        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold">Order details</h1>
+        <h2 className="px-2 mb-2 text-xs sm:text-sm md:text-base">
           Order placed on <span>{order.date}</span> | order number{" "}
           <span className="underline decoration-purple-900 decoration-dotted text-purple-900">
             {orderId}
           </span>
         </h2>
-        <div className="grid grid-cols-3 p-2 gap-2 border border-gray-400 rounded-md my-2">
-          <div className=" p-2">
-            <h3 className="font-bold text-lg mb-2">Shipping address</h3>
-            <p className="text-sm mx-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-2 gap-2 sm:gap-3 md:gap-4 border border-gray-400 rounded-md my-2">
+          <div className="p-2 sm:p-3 md:p-4">
+            <h3 className="font-bold text-base sm:text-lg md:text-xl mb-2">Shipping address</h3>
+            <p className="text-xs sm:text-sm mx-2">
               {order.address.flat + ", "} {order.address.area + ", "}
             </p>
             <p className="text-sm mx-2">
@@ -59,25 +59,24 @@ const OrderInfo = () => {
               {order.address.state + ", "}india - {order.address.pincode}
             </p>
           </div>
-          <div className=" p-2">
-            <h3 className="font-bold text-lg mb-2">Payment method</h3>
-
-            <p className="text-sm m-2">{order.payment.paymentMethod}</p>
+          <div className="p-2 sm:p-3 md:p-4">
+            <h3 className="font-bold text-base sm:text-lg md:text-xl mb-2">Payment method</h3>
+            <p className="text-xs sm:text-sm m-2">{order.payment.paymentMethod}</p>
           </div>
-          <div className=" p-2">
-            <h3 className="font-bold text-lg mb-2">Order summary</h3>
+          <div className="p-2 sm:p-3 md:p-4">
+            <h3 className="font-bold text-base sm:text-lg md:text-xl mb-2">Order summary</h3>
             <div className="flex flex-col m-2">
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-xs sm:text-sm">
                 <p>Item(s) Subtotal :</p>
                 <p className="font-semibold">
                   ₹{order.totalPrice}
                 </p>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-xs sm:text-sm">
                 <p>Fees :</p>
                 <p className="font-semibold">₹{order.totalPrice-order.totalPrice}</p>
               </div>
-              <div className="flex justify-between font-semibold text-lg my-4">
+              <div className="flex justify-between font-semibold text-sm sm:text-base md:text-lg my-2 sm:my-3 md:my-4">
                 <p>Grand Total :</p>
                 <p>
                   ₹
@@ -87,7 +86,7 @@ const OrderInfo = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-3 p-4 gap-8 border border-gray-200 rounded-md my-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 p-2 sm:p-3 md:p-4 gap-3 sm:gap-4 md:gap-6 border border-gray-200 rounded-md my-2">
           {order.orderItems.map((item) => {
             return <OrderInfoImageCard item={item} key={item.productId} />;
           })}
