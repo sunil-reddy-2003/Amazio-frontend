@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import OrderCard from "../components/OrderCard";
-import axios from "axios";
+import api from "../api/api";
 import { useState, useEffect } from "react";
 import {useAuth} from "../context/AuthContext"
 const Orders = () => {
@@ -11,24 +11,23 @@ const Orders = () => {
   useEffect(() => {
     const getOrders = async () => {
       try {
-        // Handle different user ID field names from backend
-        const userId = user?._id || user?.id || user?.userId;
         
-        if (!userId) {
+        if (!user.userId) {
           console.error("User ID not found in auth context");
           setLoading(false);
           return;
         }
 
-        const ordersResponse = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/order/getOrders/${userId}`,
+        const ordersResponse = await api.get(
+          `${import.meta.env.VITE_ORDER_BASE_URL}/api/v1/orders/userid/${user.userId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`
             }
           }
         );
-        setOrders(ordersResponse.data);
+        console.log("inside getOrders: ", ordersResponse.data);
+        setOrders(ordersResponse.data.data);
       } catch (error) {
         console.error("error while getting the orders response", error);
       }finally{
@@ -57,6 +56,7 @@ const Orders = () => {
           <div className="flex flex-col items-center w-full sm:w-4/5 md:w-[65%] px-2 sm:px-4">
             {orders &&
               orders.map((order) => {
+                console.log("inside orders map: ", order);
                 return <OrderCard key={order.orderId} order={order}/>;
               })}
           </div>

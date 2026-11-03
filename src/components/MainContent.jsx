@@ -2,7 +2,7 @@ import ProductCard from "./ProductCard";
 import CategoryBar from "./CategoryBar";
 import Pagination from "./Pagination";
 import { useOutletContext } from "react-router-dom";
-import axios from "axios";
+import api from "../api/api";
 import React, { useMemo, useState, useEffect, useCallback } from "react";
 import qs from "qs";
 import { useAuth } from "../context/AuthContext";
@@ -18,33 +18,17 @@ const MainContent = () => {
   const [pageSize, setPageSize] = useState(16);
   const [totalPages, setTotalPages] = useState();
 
-  const { user, justLoggedIn,setJustLoggedIn } = useAuth();
-  const [show, setShow] = useState(false);
 
-  useEffect(()=>{
-    if(justLoggedIn){
-      setShow(true);
-      setJustLoggedIn(false);
-    }
-  },[justLoggedIn]);
 
-  useEffect(() => {
-    const timer = setTimeout(()=>{
-      setShow(false);
-    },
-      1500)
-    return () => clearTimeout(timer);
-  }, [show]);
+
 
 
   useEffect(() => {
     const getData = async () => {
       try {
-        // const response = await axios.get(`http://localhost:9090/api/admin/getAllProducts?page=${currentPage}&size=${pageSize}${category.length>0 ? `&category=${category.join(",")}` : ""}`);
-        const response = await axios({
+        const response = await api({
           method: "get",
-          // url: "http://localhost:9090/api/admin/getAllProducts",
-          url: `${import.meta.env.VITE_API_BASE_URL}/api/admin/getAllProducts`,
+          url: `${import.meta.env.VITE_PRODUCT_BASE_URL}/api/v1/products/`,
           params: {
             page: currentPage,
             size: pageSize,
@@ -73,15 +57,6 @@ const MainContent = () => {
 
   return (
     <>
-
-      {show && (<div className="w-full absolute top-20 sm:top-24 md:top-30 z-10 flex items-center justify-center px-2">
-        <div className="flex items-center justify-center gap-2 rounded-full bg-white px-4 sm:px-8 md:px-10 py-1 sm:py-2">
-          <h3 className="text-xs sm:text-sm md:text-xl font-bold text-green-500">Welcome back, {user.fname}!!</h3>
-        </div>
-      </div>)}
-
-
-
       <CategoryBar category={category} setCategory={setCategory} />
       <div
         className={

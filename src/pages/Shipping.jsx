@@ -2,9 +2,9 @@ import OrderDetails from "../components/OrderDetails";
 import Address from "../components/Address";
 import { useState, useEffect, use } from "react";
 import { useOutletContext, Link } from "react-router-dom";
-import axios from "axios";
-import { add } from "lodash";
+import api from "../api/api";
 import UserAddress from "../components/UserAddress";
+import { useAuth } from "../context/AuthContext";
 const Shipping = () => {
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [showAddressDetails, setShowAddressDetails] = useState(false);
@@ -13,6 +13,8 @@ const Shipping = () => {
   const [showSelect, setShowSelect] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [updateId, setUpdateId] = useState(null);
+  const { user } = useAuth();
+  
 
   const [formData, setFormData] = useState({
     name: "",
@@ -31,16 +33,16 @@ const Shipping = () => {
 
   const saveAddress = async (payload) => {
     try {
-      const response = await axios({
+      const response = await api({
         method: "post",
-        url: `${import.meta.env.VITE_API_BASE_URL}/api/user/saveaddress`,
+        url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/addresses/${user.userId}`,
         data: payload,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
       })
 
-      // console.log("inside post address: ",response.data);
+      console.log("inside post address: ",response.data);
       setAddress(payload);
       setShowAddressDetails(true);
       setRefresh(prev => !prev);
@@ -53,9 +55,9 @@ const Shipping = () => {
 
   const updateAddress = async (updateId, updateAddress) => {
     try {
-      const response = await axios({
+      const response = await api({
       method: "put",
-      url: `${import.meta.env.VITE_API_BASE_URL}/api/user/updateaddress/${updateId}`,
+      url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/addresses/${user.userId}/${updateId}`,
       data: updateAddress,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -71,9 +73,9 @@ const Shipping = () => {
 
   const deleteAddress = async (addressId) => {
     try {
-      const response = await axios({
+      const response = await api({
       method: "delete",
-      url: `${import.meta.env.VITE_API_BASE_URL}/api/user/deleteaddress/${addressId}`,
+      url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/addresses/${user.userId}/${addressId}`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       }
@@ -120,17 +122,17 @@ const Shipping = () => {
   useEffect(() => {
     const getAddresses = async () => {
       try {
-        const response = await axios({
+        const response = await api({
           method: "get",
-          url: `${import.meta.env.VITE_API_BASE_URL}/api/user/getaddress`,
+          url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/addresses/${user.userId}`,
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         })
-        // console.log("inside get address: ", response.data);
-        if (response.data.status) {
+        console.log("inside get address: ", response.data);
+        if (response.data.success) {
 
-          const addresses = response.data.addresses;
+          const addresses = response.data.data;
           setAddressList(addresses);
 
           const selected = addresses.find((a) => {

@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api/api";
 import { useState, useEffect, useCallback } from "react";
 import Pagination from "../components/Pagination";
 import CategoryBar from "../components/CategoryBar";
@@ -22,10 +22,9 @@ const ViewAllProducts = () => {
     useEffect(() => {
         const getAllProducts = async () => {
             try {
-                const response = await axios({
+                const response = await api({
                     method: "get",
-                    // url: "http://localhost:9090/api/admin/viewallproducts",
-                    url: `${import.meta.env.VITE_API_BASE_URL}/api/admin/viewallproducts`,
+                    url: `${import.meta.env.VITE_PRODUCT_BASE_URL}/api/v1/products/`,
                     params: {
                         page: currentPage,
                         size: pageSize,
@@ -33,9 +32,6 @@ const ViewAllProducts = () => {
                         category: category.length ? category : undefined,
                     },
                     paramsSerializer: (params) => qs.stringify(params, { arrayFormat: "repeat" }),
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`
-                    }
                 });
 
                 setProducts(response.data.content);
@@ -60,22 +56,19 @@ const ViewAllProducts = () => {
         const newProducts = products.filter(prod => prod.id !== prodId);
         setProducts(newProducts);
         try {
-            const responce = await axios({
+            const responce = await api({
                 method: "delete",
-                // url: `http://localhost:9090/api/admin/deleteProduct/${prodId}`,
-                url: `${import.meta.env.VITE_API_BASE_URL}/api/admin/deleteProduct/${prodId}`,
+                url: `${import.meta.env.VITE_PRODUCT_BASE_URL}/api/v1/admin/products/${prodId}`,
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
             })
-            alert("product deleted successfully");
             console.log("product deleted successfully", responce.data);
             if (newProducts.length === 0 && currentPage > 0) {
                 setCurrentPage(prevPage => prevPage - 1);
             }
         } catch (error) {
             setProducts(oldProducts);
-            alert("Failed to delete product!");
             console.error("error occurred while deleting the product", error);
         }
     }, [products, currentPage]

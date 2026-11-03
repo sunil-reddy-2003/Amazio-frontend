@@ -1,7 +1,7 @@
 import OrderInfoImageCard from "./OrderInfoImageCard";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../api/api";
 const OrderInfo = () => {
     // const orderId = window.location.pathname.slice(8);
     const {orderId}=useParams();
@@ -12,17 +12,17 @@ const OrderInfo = () => {
   useEffect(() => {
     const getOrder = async () => {
       try{
-        const orderResponse = await axios.get(
-        // `http://localhost:9090/api/order/getOrder/${orderId}`,
-        `${import.meta.env.VITE_API_BASE_URL}/api/order/getOrder/${orderId}`,
+        const orderResponse = await api.get(
+        `${import.meta.env.VITE_ORDER_BASE_URL}/api/v1/orders/orderid/${orderId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           }
         }
       );
+      console.log("inside getOrder: ", orderResponse.data);
+
       setOrder(orderResponse.data);
-      // console.log("inside orderResponse",orderResponse);
       }catch(error){
         console.error("error while getting the order:",error);
       }finally{
@@ -40,7 +40,7 @@ const OrderInfo = () => {
       <div className="w-full sm:w-[85%] md:w-[80%] lg:w-[70%] rounded-md bg-white/40 p-3 sm:p-4 md:p-6">
         <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold">Order details</h1>
         <h2 className="px-2 mb-2 text-xs sm:text-sm md:text-base">
-          Order placed on <span>{order.date}</span> | order number{" "}
+          Order placed on <span>{order.data.date}</span> | order number{" "}
           <span className="underline decoration-purple-900 decoration-dotted text-purple-900">
             {orderId}
           </span>
@@ -49,19 +49,19 @@ const OrderInfo = () => {
           <div className="p-2 sm:p-3 md:p-4">
             <h3 className="font-bold text-base sm:text-lg md:text-xl mb-2">Shipping address</h3>
             <p className="text-xs sm:text-sm mx-2">
-              {order.address.flat + ", "} {order.address.area + ", "}
+              {order.data.address.flat + ", "} {order.data.address.area + ", "}
             </p>
             <p className="text-sm mx-2">
-              {order.address.landmark + ", "}
-              {order.address.city}
+              {order.data.address.landmark + ", "}
+              {order.data.address.city}
             </p>
             <p className="text-sm mx-2">
-              {order.address.state + ", "}india - {order.address.pincode}
+              {order.data.address.state + ", "}india - {order.data.address.pincode}
             </p>
           </div>
           <div className="p-2 sm:p-3 md:p-4">
             <h3 className="font-bold text-base sm:text-lg md:text-xl mb-2">Payment method</h3>
-            <p className="text-xs sm:text-sm m-2">{order.payment.paymentMethod}</p>
+            <p className="text-xs sm:text-sm m-2">{order.data.payment.paymentMethod}</p>
           </div>
           <div className="p-2 sm:p-3 md:p-4">
             <h3 className="font-bold text-base sm:text-lg md:text-xl mb-2">Order summary</h3>
@@ -69,25 +69,25 @@ const OrderInfo = () => {
               <div className="flex justify-between text-xs sm:text-sm">
                 <p>Item(s) Subtotal :</p>
                 <p className="font-semibold">
-                  ₹{order.totalPrice}
+                  ₹{order.data.totalPrice}
                 </p>
               </div>
               <div className="flex justify-between text-xs sm:text-sm">
                 <p>Fees :</p>
-                <p className="font-semibold">₹{order.totalPrice-order.totalPrice}</p>
+                <p className="font-semibold">₹{order.data.totalPrice-order.data.totalPrice}</p>
               </div>
               <div className="flex justify-between font-semibold text-sm sm:text-base md:text-lg my-2 sm:my-3 md:my-4">
                 <p>Grand Total :</p>
                 <p>
                   ₹
-                  {order.totalPrice}
+                  {order.data.totalPrice}
                 </p>
               </div>
             </div>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 p-2 sm:p-3 md:p-4 gap-3 sm:gap-4 md:gap-6 border border-gray-200 rounded-md my-2">
-          {order.orderItems.map((item) => {
+          {order.data.orderItems.map((item) => {
             return <OrderInfoImageCard item={item} key={item.productId} />;
           })}
         </div>

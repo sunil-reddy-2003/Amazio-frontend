@@ -3,8 +3,9 @@ import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import BackToTop from "../components/BackToTop";
 import { useState, useMemo, useCallback, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
-import axios from "axios";
+import api from "../api/api";
 
 const getProductId = (product) => product?.id ?? product?._id ?? product?.productId;
 
@@ -20,6 +21,7 @@ const Layout = () => {
   });
   const [address, setAddress] = useState({});
   const [addressList, setAddressList] = useState([]);
+  const {user}=useAuth();
 
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -72,14 +74,15 @@ const Layout = () => {
         return { productId: getProductId(prod), quantity: prod.quantity };
       });
       const newOrder = {
-        orderItem: products,
+        userId:user.userId,
+        orderItems: products,
         address: address,
         paymentMethod: selectedPaymentMethod,
       };
 
       try {
-        await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/api/order/createOrder`,
+        const response = await api.post(
+          `${import.meta.env.VITE_ORDER_BASE_URL}/api/v1/orders/`,
           newOrder,
           {
             headers: {
@@ -88,12 +91,16 @@ const Layout = () => {
           },
         );
 
+        if (response.data.success) {
         setCartItems([]);
         return true;
-      } catch (error) {
-        console.error("Error creating order:", error);
-        return false;
       }
+
+      return false;
+      } catch (error) {
+      console.error("Error creating order:", error);
+      return false;
+    }
     },
     [cartItems, address],
   );

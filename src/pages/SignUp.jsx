@@ -1,44 +1,33 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/api";
 const SignUp = () => {
   const [signUpData, setSignUpData] = useState({
-    fname: "",
-    lname: "",
+    fName: "",
+    lName: "",
     email: "",
     password: "",
     mobile: "",
   });
   const navigate = useNavigate();
 
-  const [show,setShow]=useState(false);
   const [message,setMessage]=useState("");
-
-  useEffect(()=>{
-    const timer=setTimeout(()=>{
-      setShow(false);
-    },1500);
-
-    return ()=>clearTimeout(timer);
-  },[show]);
 
 
   const signUpRequest = async () => {
     try {
-      const request = await axios.post(
-        // "http://localhost:9090/api/user/signup",
-        `${import.meta.env.VITE_API_BASE_URL}/api/user/signup`,
+      const request = await api.post(
+        `${import.meta.env.VITE_USER_BASE_URL}/api/v1/auth/signup`,
         signUpData,
       );
       
-      if(request.data.Success){
+      if(request.data.success){
         // console.log(request.data.message);
         navigate("/log-in");
       }else{
         // console.log(request.data.message);
         setMessage(request.data.message);
-        setShow(true);
       }
       
     } catch (error) {
@@ -49,12 +38,6 @@ const SignUp = () => {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen w-full">
-
-      {show && (<div className="w-full fixed top-20 sm:top-24 z-50 flex items-center justify-center px-2">
-        <div className="flex items-center justify-center gap-2 rounded-full bg-white px-6 sm:px-10 py-1.5 sm:py-2">
-          <h3 className="text-sm sm:text-lg md:text-xl font-bold text-red-500 text-center">{message}</h3>
-        </div>
-      </div>)}
 
       <div className="hidden md:flex justify-center items-center md:w-[55%] bg-fuchsia-900 px-4">
         <p className="font-extrabold text-white text-2xl sm:text-3xl md:text-4xl text-center">
@@ -82,9 +65,9 @@ const SignUp = () => {
               placeholder=" "
               required
               className="peer text-sm sm:text-base md:text-lg px-3 sm:px-4 md:px-6 pt-4 sm:pt-5 md:pt-6 pb-2 sm:pb-2.5 md:pb-3 rounded-md bg-gray-900 border focus:outline-none focus:border-white"
-              value={signUpData.fname}
+              value={signUpData.fName}
               onChange={(e) => {
-                setSignUpData({ ...signUpData, fname: e.target.value });
+                setSignUpData({ ...signUpData, fName: e.target.value });
               }}
             ></input>
             <label
@@ -111,9 +94,9 @@ const SignUp = () => {
               placeholder=" "
               required
               className="peer text-sm sm:text-base md:text-lg px-3 sm:px-4 md:px-6 pt-4 sm:pt-5 md:pt-6 pb-2 sm:pb-2.5 md:pb-3 rounded-md bg-gray-900 border focus:outline-none focus:border-white"
-              value={signUpData.lname}
+              value={signUpData.lName}
               onChange={(e) => {
-                setSignUpData({ ...signUpData, lname: e.target.value });
+                setSignUpData({ ...signUpData, lName: e.target.value });
               }}
             ></input>
             <label

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import axios from "axios";
+import api from "../api/api";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 const AddProduct = () => {
@@ -18,10 +18,9 @@ const AddProduct = () => {
 
     const saveProduct = async () => {
         try {
-            const postProduct = await axios({
+            const postProduct = await api({
                 method: "post",
-                // url: "http://localhost:9090/api/admin/addProduct",
-                url: `${import.meta.env.VITE_API_BASE_URL}/api/admin/addProduct`,
+                url: `${import.meta.env.VITE_PRODUCT_BASE_URL}/api/v1/admin/products/`,
                 data: productDetails,
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`

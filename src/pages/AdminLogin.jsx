@@ -1,7 +1,7 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+import api from "../api/api";
 
 const AdminLogin = () => {
   const { setIsAdmin } =
@@ -12,14 +12,13 @@ const AdminLogin = () => {
 
   const postLogin = async () => {
     try {
-      const request = await axios.post(
-        // "http://localhost:9090/api/user/adminlogin",
-        `${import.meta.env.VITE_API_BASE_URL}/api/user/adminlogin`,
+      const request = await api.post(
+        `${import.meta.env.VITE_USER_BASE_URL}/api/v1/auth/adminlogin`,
         loginData,
       );
       console.log("inside postLogin: ",request.data);
 
-      localStorage.setItem("token",request.data.token);
+      localStorage.setItem("token",request.data.data.token);
       setIsAdmin(true);
       navigate("/admin");
     } catch (error) {

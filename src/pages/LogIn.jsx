@@ -1,10 +1,10 @@
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, use } from "react";
-import axios from "axios";
+import api from "../api/api";
 
 const LogIn = () => {
-  const { setIsLoggedIn,setJustLoggedIn, redirectAfterLogin, setRedirectAfterLogin, setUser } =useAuth();
+  const { setIsLoggedIn, redirectAfterLogin, setRedirectAfterLogin, setUser } =useAuth();
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [error, setError] = useState(false);
@@ -12,19 +12,18 @@ const LogIn = () => {
 
   const postLogin = async () => {
     try {
-      const request = await axios.post(
-        // "http://localhost:9090/api/user/login",
-        `${import.meta.env.VITE_API_BASE_URL}/api/user/login`,
+      const request = await api.post(
+        `${import.meta.env.VITE_USER_BASE_URL}/api/v1/auth/login`,
         loginData,
       );
-      // console.log("inside postLogin: ", request);
+      
 
-      if(request.data.Success){
-        localStorage.setItem("token", request.data.token);
-        setUser(request.data.user);
+      if(request.data.success){
+        console.log("inside postLogin: ", request.data.data);
+        localStorage.setItem("token", request.data.data.token);
+        setUser(request.data.data);
 
         setIsLoggedIn(true);
-        setJustLoggedIn(true);
         if (redirectAfterLogin) {
           navigate(redirectAfterLogin);
           setRedirectAfterLogin(null);

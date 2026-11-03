@@ -1,7 +1,7 @@
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
 import Address from "../components/Address";
-import axios from "axios";
+import api from "../api/api";
 import UserForm from "../components/UserForm";
 
 const Profile = () => {
@@ -23,54 +23,52 @@ const Profile = () => {
   const [isDefault, setDefaultState] = useState(true);
   const [addressType, setAddressType] = useState("Home");
   const [updateId, setUpdateId] = useState(null);
-  const [refresh, setRefresh] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
   const [showUserForm, setShowUserForm] = useState(false);
 
   const [userData, setUserData] = useState({
-    fname: "",
-    lname: "",
+    fName: "",
+    lName: "",
     email: "",
     mobile: "",
   });
 
-  useEffect(() => {
-    const getAddresses = async () => {
-      try {
-        const response = await axios({
-          method: "get",
-          url: `${import.meta.env.VITE_API_BASE_URL}/api/user/getaddress`,
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
 
-        if (response.data.status) {
-          const addresses = response.data.addresses;
-          setAddressList(addresses);
-        } else {
-          setAddressList([]);
-        }
-      } catch (error) {
-        console.error("error occurred while fetching addresses: ", error.response);
-      }
-    };
-
-    getAddresses();
-  }, [refresh]);
-
-  const updateAddress = async (updateId, updateAddress) => {
+  const getAddresses = async () => {
     try {
-      await axios({
-        method: "put",
-        url: `${import.meta.env.VITE_API_BASE_URL}/api/user/updateaddress/${updateId}`,
-        data: updateAddress,
+      const response = await api({
+        method: "get",
+        url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/addresses/${user.userId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
-      setRefresh((prev) => !prev);
+      const addresses = response.data.data;
+
+      setAddressList(Array.isArray(addresses) ? addresses : []);
+    } catch (error) {
+      if (error.response?.status === 404) {
+        setAddressList([]);
+      } else {
+        console.error("Error fetching addresses:", error);
+      }
+    }
+  };
+
+
+  const updateAddress = async (updateId, updateAddress) => {
+    try {
+      await api({
+        method: "put",
+        url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/addresses/${user.userId}/${updateId}`,
+        data: updateAddress,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      await getAddresses();
+      setShowAddressForm(false);
     } catch (error) {
       console.error("error occurred while updating address: ", error);
     }
@@ -78,14 +76,14 @@ const Profile = () => {
 
   const deleteAddress = async (addressId) => {
     try {
-      await axios({
+      await api({
         method: "delete",
-        url: `${import.meta.env.VITE_API_BASE_URL}/api/user/deleteaddress/${addressId}`,
+        url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/addresses/${user.userId}/${addressId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      setRefresh((prev) => !prev);
+      await getAddresses();
     } catch (error) {
       console.error("error occurred while deleting the address: ", error);
     }
@@ -93,18 +91,21 @@ const Profile = () => {
 
   const saveAddress = async (payload) => {
     try {
-      await axios({
+      await api({
         method: "post",
-        url: `${import.meta.env.VITE_API_BASE_URL}/api/user/saveaddress`,
+        url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/addresses/${user.userId}`,
         data: payload,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
-      setRefresh((prev) => !prev);
+      await getAddresses();
+      setShowAddress(true);
+      setShowAddressForm(false);
+
     } catch (error) {
-      console.error("error occurred while saving address: ", error);
+      console.error("Error saving address:", error);
     }
   };
 
@@ -122,8 +123,8 @@ const Profile = () => {
               className="font-bold text-sm sm:text-base md:text-lg m-1 sm:m-2 p-1 sm:p-2 cursor-pointer hover:text-blue-600 transition-colors"
               onClick={() => {
                 setUserData({
-                  fname: user.fname || "",
-                  lname: user.lname || "",
+                  fName: user.fName || "",
+                  lName: user.lName || "",
                   email: user.email || "",
                   mobile: user.mobile || "",
                 });
@@ -141,7 +142,7 @@ const Profile = () => {
             </div>
             <div className="flex gap-2 px-1 sm:px-2 flex-col sm:flex-row">
               <p className="w-20 text-left font-bold">Name</p>
-              <p>{user.fname + " " + user.lname}</p>
+              <p>{user.fName + " " + user.lName}</p>
             </div>
             <div className="flex gap-2 px-1 sm:px-2 flex-col sm:flex-row">
               <p className="w-20 text-left font-bold">Email</p>
@@ -158,7 +159,10 @@ const Profile = () => {
           <div className="flex flex-col sm:flex-row justify-between px-2 sm:px-4 gap-2 sm:gap-0">
             <h1
               className="font-extrabold text-base sm:text-lg md:text-xl cursor-pointer hover:text-blue-600 transition-colors"
-              onClick={() => setShowAddress((prev) => !prev)}
+              onClick={() => {
+                getAddresses();
+                setShowAddress((prev) => !prev)
+              }}
             >
               Show Address <i className={`fa-solid cursor-pointer ${showAddress ? "fa-chevron-up" : "fa-chevron-down"}`}></i>
             </h1>
@@ -191,70 +195,76 @@ const Profile = () => {
 
           {showAddress && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mt-3 sm:mt-4">
-              {addressList.map((address) => (
-                <div
-                  className={`p-3 sm:p-4 md:p-6 rounded-md hover:scale-105 duration-400 transition-transform text-xs sm:text-sm ${address.defaultAddress ? "bg-slate-950" : "bg-slate-800"}`}
-                  key={address.addressId}
-                >
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex text-white gap-2 flex-wrap">
-                      <h3 className="font-bold tracking-wider">{address.name}</h3>
-                      <div className="border px-2 py-1 rounded-md text-[10px] flex items-center justify-center">
-                        {address.addressType}
+              {addressList.length > 0 ? (
+                addressList.map((address) => (
+                  <div
+                    className={`p-3 sm:p-4 md:p-6 rounded-md hover:scale-105 duration-400 transition-transform text-xs sm:text-sm ${address.defaultAddress ? "bg-slate-950" : "bg-slate-800"}`}
+                    key={address.addressId}
+                  >
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex text-white gap-2 flex-wrap">
+                        <h3 className="font-bold tracking-wider">{address.name}</h3>
+                        <div className="border px-2 py-1 rounded-md text-[10px] flex items-center justify-center">
+                          {address.addressType}
+                        </div>
+                      </div>
+
+                      <div>
+                        {address.defaultAddress && (
+                          <p className="font-semibold tracking-widest text-green-300 text-[10px] sm:text-[12px]">
+                            Default
+                          </p>
+                        )}
                       </div>
                     </div>
 
-                    <div>
-                      {address.defaultAddress && (
-                        <p className="font-semibold tracking-widest text-green-300 text-[10px] sm:text-[12px]">
-                          Default
-                        </p>
-                      )}
+                    <div className="flex gap-2">
+                      <div className="text-gray-200 font-sans flex-1 break-words">
+                        {address.flat + ", " + address.area + ", " + address.landmark + ", " + address.city + ", " + address.state + ", "}
+                        India - {address.pincode}
+                        <br />
+                        Phone: {address.mobile}
+                      </div>
+
+                      <div className="flex flex-col gap-1 text-white">
+                        <button
+                          className="p-1.5 sm:p-2 w-8 sm:w-10 rounded-full hover:bg-white duration-400 hover:text-black cursor-pointer transition-all text-xs sm:text-base"
+                          onClick={() => {
+                            setFormMode("Edit Address");
+                            setFormData({
+                              name: address.name || "",
+                              mobile: address.mobile || "",
+                              pincode: address.pincode || "",
+                              area: address.area || "",
+                              flat: address.flat || "",
+                              landmark: address.landmark || "",
+                              city: address.city || "",
+                              state: address.state || "",
+                            });
+
+                            setDefaultState(address.isDefault ?? true);
+                            setAddressType(address.addressType || "Home");
+                            setUpdateId(address.addressId);
+                            setShowAddressForm(true);
+                          }}
+                        >
+                          <i className="fa-regular fa-pen-to-square"></i>
+                        </button>
+                        <button
+                          className="p-1.5 sm:p-2 w-8 sm:w-10 rounded-full hover:bg-white duration-400 hover:text-black cursor-pointer transition-all text-xs sm:text-base"
+                          onClick={() => deleteAddress(address.addressId)}
+                        >
+                          <i className="fa-regular fa-trash-can"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
-
-                  <div className="flex gap-2">
-                    <div className="text-gray-200 font-sans flex-1 break-words">
-                      {address.flat + ", " + address.area + ", " + address.landmark + ", " + address.city + ", " + address.state + ", "}
-                      India - {address.pincode}
-                      <br />
-                      Phone: {address.mobile}
-                    </div>
-
-                    <div className="flex flex-col gap-1 text-white">
-                      <button
-                        className="p-1.5 sm:p-2 w-8 sm:w-10 rounded-full hover:bg-white duration-400 hover:text-black cursor-pointer transition-all text-xs sm:text-base"
-                        onClick={() => {
-                          setFormMode("Edit Address");
-                          setFormData({
-                            name: address.name || "",
-                            mobile: address.mobile || "",
-                            pincode: address.pincode || "",
-                            area: address.area || "",
-                            flat: address.flat || "",
-                            landmark: address.landmark || "",
-                            city: address.city || "",
-                            state: address.state || "",
-                          });
-
-                          setDefaultState(address.isDefault ?? true);
-                          setAddressType(address.addressType || "Home");
-                          setUpdateId(address.addressId);
-                          setShowAddressForm(true);
-                        }}
-                      >
-                        <i className="fa-regular fa-pen-to-square"></i>
-                      </button>
-                      <button
-                        className="p-1.5 sm:p-2 w-8 sm:w-10 rounded-full hover:bg-white duration-400 hover:text-black cursor-pointer transition-all text-xs sm:text-base"
-                        onClick={() => deleteAddress(address.addressId)}
-                      >
-                        <i className="fa-regular fa-trash-can"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="col-span-full text-center text-gray-500 py-6">
+                  No addresses found. Add your first address!
+                </p>
+              )}
             </div>
           )}
         </div>

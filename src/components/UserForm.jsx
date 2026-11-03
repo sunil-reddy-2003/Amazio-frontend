@@ -1,22 +1,22 @@
-import axios from "axios";
+import api from "../api/api";
 import { useAuth } from "../context/AuthContext";
 
 const UserForm = (props) => {
-    const { setShowUserForm, userData, setUserData, userId } = props;
-    const {setUser} =useAuth();
+    const { setShowUserForm, userData, setUserData } = props;
+    const {user,setUser} =useAuth();
 
     const updateUser = async () => {
         try {
-            const response = await axios({
+            const response = await api({
                 method: "put",
-                url: `${import.meta.env.VITE_API_BASE_URL}/api/user/updateuser/${userId}`,
+                url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/users/${user.userId}`,
                 data: userData,
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
             })
-            setUser(response.data);
-            // console.log("inside updateUset with: ", response.data);
+            console.log("inside updateUser: ", response.data);
+            setUser(response.data.data);
         } catch (error) {
             console.error("error occurred while updating user details: ", error.response);
         }
@@ -28,7 +28,7 @@ const UserForm = (props) => {
                     className="h-full bg-slate-600"
                     onSubmit={(e) => {
                         e.preventDefault();
-                        updateUser(userId,userData);
+                        updateUser(user.userId,userData);
                         setShowUserForm(false);
                     }}
                 >
@@ -47,8 +47,8 @@ const UserForm = (props) => {
                             id="fname"
                             placeholder=" "
                             type="text"
-                            value={userData.fname}
-                            onChange={(e) => setUserData({ ...userData, fname: e.target.value })}
+                            value={userData.fName}
+                            onChange={(e) => setUserData({ ...userData, fName: e.target.value })}
                             className="border border-white peer p-2 sm:p-3 md:p-4 rounded-md outline-none text-sm sm:text-base" />
                         <label
                             htmlFor="fname"
@@ -68,8 +68,8 @@ const UserForm = (props) => {
                             id="lname"
                             placeholder=" "
                             type="text"
-                            value={userData.lname}
-                            onChange={(e) => setUserData({ ...userData, lname: e.target.value })}
+                            value={userData.lName}
+                            onChange={(e) => setUserData({ ...userData, lName: e.target.value })}
                             className="border border-white peer p-2 sm:p-3 md:p-4 rounded-md outline-none text-sm sm:text-base" />
                         <label
                             htmlFor="lname"
