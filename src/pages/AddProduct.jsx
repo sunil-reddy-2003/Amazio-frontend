@@ -26,7 +26,6 @@ const AddProduct = () => {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
             })
-            alert(`product saved successfully`);
             setProductDetails({
                 name: "",
                 imageUrl: "",
@@ -40,16 +39,16 @@ const AddProduct = () => {
         }
     }
 
-    const inputCss = "peer p-4  border-2 rounded-2xl w-full text-xl font-bold focus:outline-3"
-    const labelCSS = "absolute top-6 left-8 duration-200 font-extralight peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-white peer-focus:tracking-widest peer-not-placeholder-shown:-translate-y-4 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:text-white peer-not-placeholder-shown:tracking-widest peer-placeholder-shown:text-xl peer-placeholder-shown:text-black"
+    const inputCss = "peer w-full rounded-2xl border-2 p-3 text-base font-bold focus:outline-3 sm:p-4 sm:text-xl"
+    const labelCSS = "absolute top-6 left-8 duration-200 font-extralight peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 peer-focus:tracking-widest peer-not-placeholder-shown:-translate-y-4 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:text-white peer-not-placeholder-shown:tracking-widest peer-placeholder-shown:text-xl peer-placeholder-shown:text-white"
 
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-linear-to-r from-gray-800  to-gray-400">
-            <div className=" w-[30%] rounded-md">
-                <h1 className="mx-8 p-4 border-2 rounded-md text-center tracking-widest font-bold text-2xl bg-gray-900 text-white">Add Product</h1>
+        <div className="flex min-h-screen items-center justify-center bg-linear-to-r from-gray-800 to-gray-400 px-4 py-8 sm:px-6">
+            <div className="w-full max-w-2xl rounded-md">
+                <h1 className="mx-2 rounded-md border-2 bg-gray-900 p-4 text-center text-xl font-bold tracking-widest text-white sm:mx-8 sm:text-2xl">Add Product</h1>
                 <form
-                    className="flex flex-col mx-2 p-2"
+                    className="mx-auto flex w-full flex-col p-2 sm:p-4"
                     onSubmit={(e) => {
                         e.preventDefault();
                         if (isAdmin) {
@@ -140,7 +139,7 @@ const AddProduct = () => {
 
                     </div>
                     <button
-                        className="mx-4 p-4 border-2 rounded-full text-center hover:tracking-widest font-bold text-xl hover:bg-white hover:text-black hover:scale-98 duration-300"
+                        className="mx-4 rounded-full border-2 p-3 text-center text-base font-bold duration-300 hover:scale-98 hover:bg-white hover:text-black hover:tracking-widest sm:p-4 sm:text-xl"
                         type="submit"
                     >
                         SAVE PRODUCT

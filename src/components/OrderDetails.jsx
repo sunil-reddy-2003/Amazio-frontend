@@ -49,7 +49,7 @@ const OrderDetails = (props) => {
             <span>₹{totalPrice}</span>
           </div>
           <button
-            className="mt-4 w-full py-2 px-2 sm:px-3 md:px-4 bg-black text-white rounded hover:bg-white hover:text-black transition-colors text-xs sm:text-sm md:text-base font-semibold"
+            className="mt-3 min-h-10 w-full rounded bg-black px-3 py-2 text-center text-xs font-semibold leading-tight text-white transition-colors hover:bg-white hover:text-black sm:mt-4 sm:text-sm md:text-base"
             onClick={() => {
               if (nextStep === "/shipping") {
                 if (isLoggedIn) {

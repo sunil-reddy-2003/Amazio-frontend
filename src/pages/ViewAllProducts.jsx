@@ -75,13 +75,13 @@ const ViewAllProducts = () => {
     )
     return (
 
-        <div className="relative min-h-screen bg-gradient-to-r from-gray-800 to-gray-400 flex flex-col">
+        <div className="relative flex min-h-screen flex-col bg-gradient-to-r from-gray-800 to-gray-400">
 
             {!isAdmin && (
-                <div className="flex flex-col items-center justify-center p-20 m-20">
-                    <div className="border p-10 rounded-full hover:scale-90 hover:bg-gray-800 duration-1000 transition-all">
-                        <h1 className="text-3xl font-bold mb-4">Hello User!!</h1>
-                        <p className="text-white text-sm tracking-widest w-200">
+                <div className="flex flex-1 flex-col items-center justify-center px-4 py-10 sm:px-6">
+                    <div className="w-full max-w-3xl rounded-2xl border p-6 text-white transition-all duration-1000 hover:scale-[0.98] hover:bg-gray-800 sm:p-10 sm:hover:scale-95 sm:rounded-full">
+                        <h1 className="mb-4 text-2xl font-bold sm:text-3xl">Hello User!!</h1>
+                        <p className="w-full text-sm tracking-widest text-white sm:text-base">
                             This area is restricted to authorized administrators.
                             Please log in to access the dashboard and manage the platform.
                         </p>
@@ -97,12 +97,12 @@ const ViewAllProducts = () => {
                         <div
                             className={
                                 loading
-                                    ? "flex items-center justify-center h-screen  "
-                                    : `grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full px-8 py-4`
+                                    ? "flex min-h-[50vh] items-center justify-center px-4 py-10"
+                                    : "grid w-full grid-cols-1 gap-4 px-4 py-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-3 xl:grid-cols-4"
                             }
                         >
                             {loading ? (
-                                <div className="text-5xl font-bold text-white">
+                                <div className="text-center text-2xl font-bold text-white sm:text-4xl">
                                     Loading products...
                                 </div>
                             ) : products.length ? (
@@ -110,7 +110,7 @@ const ViewAllProducts = () => {
                                     <AdminProductCard product={product} key={product.id} onDelete={() => deleteProduct(product.id)} />
                                 ))
                             ) : (
-                                <div className="col-span-full flex items-center justify-center h-screen text-gray-300 text-3xl">
+                                <div className="col-span-full flex min-h-[40vh] items-center justify-center px-4 text-center text-xl text-gray-300 sm:text-3xl">
                                     {`No products found for ${searchText}`}
                                 </div>
                             )}

@@ -18,24 +18,26 @@ const CartItemCard = React.memo((props) => {
               {product.description}
             </p>
           </div>
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-2 text-black items-center">
+          <div className="flex flex-row flex-wrap items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 text-black">
               <button
                 type="button"
                 disabled={product.quantity === 1}
-                className="border-2 px-1.5 sm:px-2 text-xs sm:text-sm font-extrabold rounded-full cursor-pointer hover:text-white hover:bg-black active:bg-white active:text-black disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                aria-label={`Decrease quantity of ${product.name}`}
+                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border-2 text-xs font-extrabold transition-colors hover:bg-black hover:text-white active:bg-white active:text-black disabled:cursor-not-allowed disabled:opacity-50"
                 onClick={() => {
                   onDecrease(product.id);
                 }}
               >
                 <i className="fa-solid fa-minus"></i>
               </button>
-              <span className="text-sm sm:text-base md:text-lg font-bold min-w-6 text-center">
+              <span className="min-w-6 text-center text-sm font-bold sm:text-base">
                 {product.quantity}
               </span>
               <button
                 type="button"
-                className="border-2 px-1.5 sm:px-2 text-xs sm:text-sm font-extrabold rounded-full cursor-pointer hover:text-white hover:bg-black active:bg-white active:text-black transition-colors"
+                aria-label={`Increase quantity of ${product.name}`}
+                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border-2 text-xs font-extrabold transition-colors hover:bg-black hover:text-white active:bg-white active:text-black"
                 onClick={() => {
                   onIncrease(product.id);
                 }}
@@ -44,7 +46,8 @@ const CartItemCard = React.memo((props) => {
               </button>
             </div>
             <button
-              className="text-xs sm:text-sm md:text-base px-3 sm:px-4 py-1 sm:py-1.5 rounded-lg bg-white text-black border hover:bg-black hover:text-white hover:border-white active:bg-white active:text-black transition-colors w-full sm:w-auto"
+              type="button"
+              className="w-fit rounded-md border bg-white px-3 py-1 text-xs text-black transition-colors hover:border-white hover:bg-black hover:text-white active:bg-white active:text-black sm:py-1.5 sm:text-sm"
               onClick={() => {
                 onDelete(product.id);
               }}

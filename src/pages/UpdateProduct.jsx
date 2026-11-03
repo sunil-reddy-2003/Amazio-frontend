@@ -25,17 +25,17 @@ const UpdateProduct = () => {
             try {
                 const responce = await api({
                     method: "get",
-                    url: `${import.meta.env.VITE_PRODUCT_BASE_URL}/api/v1/products/${id}`,
+                    url: `${import.meta.env.VITE_PRODUCT_BASE_URL}/api/v1/admin/products/${id}`,
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`
                     }
                 })
                 setProductInfo({
-                    name: responce.data.name,
-                    imageUrl: responce.data.imageUrl,
-                    price: responce.data.price,
-                    description: responce.data.description,
-                    category: responce.data.category
+                    name: responce.data.data.name,
+                    imageUrl: responce.data.data.imageUrl,
+                    price: responce.data.data.price,
+                    description: responce.data.data.description,
+                    category: responce.data.data.category
                 })
                 console.log("product fetched successfully: ", responce.data);
             } catch (error) {
@@ -57,11 +57,9 @@ const UpdateProduct = () => {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
             })
-            alert("product updated successfully!!");
             navigate("/viewallproducts")
             console.log("updated product successfully ", prodResp.data);
         } catch (error) {
-            alert("error occurred while updating the product !!");
 
             console.error("error occurred while updating the product", error);
         } finally {
@@ -76,22 +74,22 @@ const UpdateProduct = () => {
     }
 
 
-    const inputCss = "peer p-4  border-2 rounded-2xl w-full text-xl font-bold focus:outline-3"
-    const labelCSS = "absolute top-6 left-8 duration-200 font-extralight peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-white peer-focus:tracking-widest peer-not-placeholder-shown:-translate-y-4 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:text-white peer-not-placeholder-shown:tracking-widest peer-placeholder-shown:text-xl peer-placeholder-shown:text-black"
+    const inputCss = "peer w-full rounded-2xl border-2 p-3 text-base font-bold focus:outline-3 sm:p-4 sm:text-xl"
+    const labelCSS = "absolute top-6 left-8 duration-200 font-extralight peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 peer-focus:tracking-widest peer-not-placeholder-shown:-translate-y-4 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:text-white peer-not-placeholder-shown:tracking-widest peer-placeholder-shown:text-xl peer-placeholder-shown:text-white"
     return (
-        <div className="flex items-center justify-center min-h-screen bg-linear-to-r from-gray-800  to-gray-400">
-            {!isAdmin && (<div className="border p-10 rounded-full hover:scale-90 hover:bg-gray-800 duration-1000 transition-all">
+        <div className="flex min-h-screen items-center justify-center bg-linear-to-r from-gray-800 to-gray-400 px-4 py-8 sm:px-6">
+            {!isAdmin && (<div className="w-full max-w-3xl rounded-2xl border p-6 text-white transition-all duration-1000 hover:scale-95 hover:bg-gray-800 sm:p-10 sm:rounded-full">
                 <h1 className="text-3xl font-bold mb-4">Hello User!!</h1>
-                <p className="text-white text-sm tracking-widest w-200">
+                <p className="w-full text-sm tracking-widest text-white">
                     This area is restricted to authorized administrators.
                     Please log in to access the dashboard and manage the platform.
                 </p>
             </div>)}
             
-            {isAdmin && (<div className=" w-[30%] rounded-md">
-                <h1 className="mx-8 p-4 border-2 rounded-md text-center tracking-widest font-bold text-2xl bg-gray-900 text-white">Update Product  : {id} </h1>
+            {isAdmin && (<div className="w-full max-w-2xl rounded-md">
+                <h1 className="mx-2 rounded-md border-2 bg-gray-900 p-4 text-center text-xl font-bold tracking-widest text-white sm:mx-8 sm:text-2xl">Update Product : {id}</h1>
                 <form
-                    className="flex flex-col mx-2 p-2"
+                    className="mx-auto flex w-full flex-col p-2 sm:p-4"
                     onSubmit={(e) => {
                         e.preventDefault();
                         if (isAdmin) {
@@ -182,7 +180,7 @@ const UpdateProduct = () => {
 
                     </div>
                     <button
-                        className="mx-4 p-4 border-2 rounded-full text-center hover:tracking-widest font-bold text-xl hover:bg-white hover:text-black hover:scale-98 duration-300"
+                        className="mx-4 rounded-full border-2 p-3 text-center text-base font-bold duration-300 hover:tracking-widest hover:bg-white hover:text-black hover:scale-98 sm:p-4 sm:text-xl"
                         type="submit"
                     >
                         SAVE PRODUCT

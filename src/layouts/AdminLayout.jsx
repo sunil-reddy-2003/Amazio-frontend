@@ -7,9 +7,9 @@ const AdminLayout=()=>{
 
     
     return(
-        <div className="bg-linear-to-r from-gray-800  to-gray-400">
+        <div className="min-h-screen bg-linear-to-r from-gray-800 to-gray-400">
             <AdminNav onSearch={setSearchText} />
-            <main>
+            <main className="min-w-0">
                 <Outlet context={{searchText}}/>
             </main>
         </div>

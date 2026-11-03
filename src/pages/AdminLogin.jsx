@@ -27,26 +27,26 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="flex  h-screen  ">
+    <div className="flex min-h-screen flex-col md:flex-row">
       {/* Left Side */}
-      <div className="hidden md:flex w-[55%]  bg-slate-900 items-center justify-center italic font-extrabold text-white text-3xl p-10">
+      <div className="hidden w-[55%] items-center justify-center bg-slate-900 p-10 text-center text-2xl font-extrabold italic text-white lg:flex lg:text-3xl">
         “Leadership is not about being in charge. It’s about taking responsibility.”
       </div>
 
       {/* Right Side */}
-      <div className="w-full md:w-[45%]  bg-gray-800 flex items-center justify-center">
+      <div className="flex min-h-screen w-full items-center justify-center bg-gray-800 px-4 py-10 md:w-full lg:w-[45%]">
         <form
-          className="w-full max-w-md px-6 py-10"
+          className="w-full max-w-md px-2 py-6 sm:px-6 sm:py-10"
           onSubmit={(e) => {
             e.preventDefault();
             postLogin();
             localStorage.setItem("loginData", JSON.stringify(loginData));
           }}
         >
-          <h4 className="font-bold text-2xl text-white text-left">
+          <h4 className="text-left text-xl font-bold text-white sm:text-2xl">
            ADMINISTRATOR LOGIN
           </h4>
-          <h4 className="font-semibold text-lg text-white mb-6 text-left">
+          <h4 className="mb-6 text-left text-base font-semibold text-white sm:text-lg">
            authorized access only
           </h4>
 
@@ -57,7 +57,7 @@ const AdminLogin = () => {
               id="email"
               required
               placeholder=" "
-              className="peer text-xl  px-6 pt-6 pb-3 rounded-md bg-gray-900 border"
+              className="peer w-full rounded-md border bg-gray-900 px-4 pb-3 pt-6 text-base text-white sm:px-6 sm:text-xl"
               value={loginData.email}
               onChange={(e) => {
                 setLoginData({ ...loginData, email: e.target.value });
@@ -65,7 +65,7 @@ const AdminLogin = () => {
             />
             <label
               htmlFor="email"
-              className="absolute top-5 left-0 px-6  duration-200 transition-all
+              className="absolute left-0 top-5 px-4 transition-all duration-200 sm:px-6
               peer-focus:-translate-y-3
               peer-focus:text-sm
               peer-focus:font-light
@@ -73,9 +73,10 @@ const AdminLogin = () => {
 
               peer-not-placeholder-shown:-translate-y-3
               peer-not-placeholder-shown:text-sm
-              peer-not-placeholder-shown:text-black
+              peer-not-placeholder-shown:text-white
 
-              peer-placeholder-shown:text-lg"
+              peer-placeholder-shown:text-lg
+              peer-placeholder-shown:text-white/70"
             >
               admin email address
             </label>
@@ -88,7 +89,7 @@ const AdminLogin = () => {
               id="password"
               required
               placeholder=" "
-              className="peer text-xl  px-6 pt-6 pb-3 rounded-md bg-gray-900 border"
+              className="peer w-full rounded-md border bg-gray-900 px-4 pb-3 pt-6 text-base text-white sm:px-6 sm:text-xl"
               value={loginData.password}
               onChange={(e) => {
                 setLoginData({ ...loginData, password: e.target.value });
@@ -96,7 +97,7 @@ const AdminLogin = () => {
             />
             <label
               htmlFor="password"
-              className="absolute top-5 left-0 px-6  duration-200 transition-all
+              className="absolute left-0 top-5 px-4 transition-all duration-200 sm:px-6
               peer-focus:-translate-y-3
               peer-focus:text-sm
               peer-focus:font-light
@@ -104,9 +105,10 @@ const AdminLogin = () => {
 
               peer-not-placeholder-shown:-translate-y-3
               peer-not-placeholder-shown:text-sm
-              peer-not-placeholder-shown:text-black
+              peer-not-placeholder-shown:text-white
 
-              peer-placeholder-shown:text-lg"
+              peer-placeholder-shown:text-lg
+              peer-placeholder-shown:text-white/70"
             >
              admin Password
             </label>
@@ -115,14 +117,14 @@ const AdminLogin = () => {
           {/* Buttons */}
           <button
             type="submit"
-            className="w-full rounded-full p-2 mb-3 text-xl text-white bg-slate-950 hover:bg-slate-500 hover:font-bold transition cursor-pointer"
+            className="mb-3 w-full cursor-pointer rounded-full bg-slate-950 p-2 text-base text-white transition hover:bg-slate-500 hover:font-bold sm:text-xl"
           >
             Log in
           </button>
 
           <button
             type="button"
-            className="w-full rounded-full p-2 text-xl text-white bg-fuchsia-800 hover:bg-rose-500 hover:font-bold transition cursor-pointer"
+            className="w-full cursor-pointer rounded-full bg-fuchsia-800 p-2 text-base text-white transition hover:bg-rose-500 hover:font-bold sm:text-xl"
           >
             Forgot password?
           </button>
