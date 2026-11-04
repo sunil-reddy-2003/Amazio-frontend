@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
+import PasswordVisibilityToggle from "../components/PasswordVisibilityToggle";
 const SignUp = () => {
   const [signUpData, setSignUpData] = useState({
     fName: "",
@@ -11,6 +12,7 @@ const SignUp = () => {
     mobile: "",
   });
   const navigate = useNavigate();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const [message,setMessage]=useState("");
 
@@ -46,7 +48,7 @@ const SignUp = () => {
       </div>
       <div className="w-full md:w-[45%] bg-gray-800 flex items-center justify-center min-h-screen md:min-h-full">
         <form
-          className="flex flex-col w-full text-white px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-10"
+          className="auth-form flex flex-col w-full text-white px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-8 md:py-10"
           onSubmit={(e) => {
             e.preventDefault();
             signUpRequest();
@@ -58,7 +60,7 @@ const SignUp = () => {
               <i className="pl-2 fa-solid fa-face-grin-hearts"></i>
             </span>
           </h1>
-          <div className="relative flex flex-col mb-3 sm:mb-4">
+          <div className="group relative flex flex-col mb-3 sm:mb-4">
             <input
               type="text"
               id="fname"
@@ -77,17 +79,18 @@ const SignUp = () => {
               peer-focus:text-xs sm:peer-focus:text-xs md:peer-focus:text-sm
               peer-focus:font-light
               peer-focus:text-white
+              group-hover:text-white
 
               peer-not-placeholder-shown:-translate-y-2 sm:peer-not-placeholder-shown:-translate-y-2.5 md:peer-not-placeholder-shown:-translate-y-3
               peer-not-placeholder-shown:text-xs sm:peer-not-placeholder-shown:text-xs md:peer-not-placeholder-shown:text-sm
-              peer-not-placeholder-shown:text-black
+              peer-not-placeholder-shown:text-white
 
               peer-placeholder-shown:text-sm sm:peer-placeholder-shown:text-base"
             >
               First Name
             </label>
           </div>
-          <div className="relative flex flex-col mb-3 sm:mb-4">
+          <div className="group relative flex flex-col mb-3 sm:mb-4">
             <input
               id="lname"
               type="text"
@@ -106,17 +109,18 @@ const SignUp = () => {
               peer-focus:text-xs sm:peer-focus:text-xs md:peer-focus:text-sm
               peer-focus:font-light
               peer-focus:text-white
+              group-hover:text-white
 
               peer-not-placeholder-shown:-translate-y-2 sm:peer-not-placeholder-shown:-translate-y-2.5 md:peer-not-placeholder-shown:-translate-y-3
               peer-not-placeholder-shown:text-xs sm:peer-not-placeholder-shown:text-xs md:peer-not-placeholder-shown:text-sm
-              peer-not-placeholder-shown:text-black
+              peer-not-placeholder-shown:text-white
 
               peer-placeholder-shown:text-sm sm:peer-placeholder-shown:text-base"
             >
               Last Name
             </label>
           </div>
-          <div className="relative flex flex-col mb-3 sm:mb-4">
+          <div className="group relative flex flex-col mb-3 sm:mb-4">
             <input
               id="email"
               type="email"
@@ -135,29 +139,34 @@ const SignUp = () => {
               peer-focus:text-xs sm:peer-focus:text-xs md:peer-focus:text-sm
               peer-focus:font-light
               peer-focus:text-white
+              group-hover:text-white
 
               peer-not-placeholder-shown:-translate-y-2 sm:peer-not-placeholder-shown:-translate-y-2.5 md:peer-not-placeholder-shown:-translate-y-3
               peer-not-placeholder-shown:text-xs sm:peer-not-placeholder-shown:text-xs md:peer-not-placeholder-shown:text-sm
-              peer-not-placeholder-shown:text-black
+              peer-not-placeholder-shown:text-white
 
               peer-placeholder-shown:text-sm sm:peer-placeholder-shown:text-base"
             >
               Email address
             </label>
           </div>
-          <div className="relative flex flex-col mb-3 sm:mb-4">
+          <div className="group relative flex flex-col mb-3 sm:mb-4">
             <input
               id="password"
-              type="password"
+              type={isPasswordVisible ? "text" : "password"}
               minLength={10}
               required
               placeholder=" "
-              className="peer text-sm sm:text-base md:text-lg px-3 sm:px-4 md:px-6 pt-4 sm:pt-5 md:pt-6 pb-2 sm:pb-2.5 md:pb-3 rounded-md bg-gray-900 border focus:outline-none focus:border-white"
+              className="peer text-sm sm:text-base md:text-lg pl-3 pr-12 sm:pl-4 sm:pr-12 md:pl-6 md:pr-12 pt-4 sm:pt-5 md:pt-6 pb-2 sm:pb-2.5 md:pb-3 rounded-md bg-gray-900 border focus:outline-none focus:border-white"
               value={signUpData.password}
               onChange={(e) => {
                 setSignUpData({ ...signUpData, password: e.target.value });
               }}
             ></input>
+            <PasswordVisibilityToggle
+              isVisible={isPasswordVisible}
+              onToggle={() => setIsPasswordVisible((visible) => !visible)}
+            />
             <label
               htmlFor="password"
               className="absolute top-3 sm:top-4 md:top-5 left-3 sm:left-4 md:left-6 duration-200 transition-all text-xs sm:text-sm
@@ -165,17 +174,18 @@ const SignUp = () => {
               peer-focus:text-xs sm:peer-focus:text-xs md:peer-focus:text-sm
               peer-focus:font-light
               peer-focus:text-white
+              group-hover:text-white
 
               peer-not-placeholder-shown:-translate-y-2 sm:peer-not-placeholder-shown:-translate-y-2.5 md:peer-not-placeholder-shown:-translate-y-3
               peer-not-placeholder-shown:text-xs sm:peer-not-placeholder-shown:text-xs md:peer-not-placeholder-shown:text-sm
-              peer-not-placeholder-shown:text-black
+              peer-not-placeholder-shown:text-white
 
               peer-placeholder-shown:text-sm sm:peer-placeholder-shown:text-base"
             >
               Password
             </label>
           </div>
-          <div className="relative flex flex-col mb-4 sm:mb-5">
+          <div className="group relative flex flex-col mb-4 sm:mb-5">
             <input
               id="number"
               type="text"
@@ -196,10 +206,11 @@ const SignUp = () => {
               peer-focus:text-xs sm:peer-focus:text-xs md:peer-focus:text-sm
               peer-focus:font-light
               peer-focus:text-white
+              group-hover:text-white
 
               peer-not-placeholder-shown:-translate-y-2 sm:peer-not-placeholder-shown:-translate-y-2.5 md:peer-not-placeholder-shown:-translate-y-3
               peer-not-placeholder-shown:text-xs sm:peer-not-placeholder-shown:text-xs md:peer-not-placeholder-shown:text-sm
-              peer-not-placeholder-shown:text-black
+              peer-not-placeholder-shown:text-white
 
               peer-placeholder-shown:text-sm sm:peer-placeholder-shown:text-base"
             >

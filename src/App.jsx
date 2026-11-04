@@ -1,4 +1,5 @@
 import LogIn from "./pages/LogIn";
+import ForgotPassword from "./pages/ForgotPassword";
 import { Routes, Route } from "react-router-dom";
 import MainContent from "./components/MainContent";
 import PageNotExist from "./pages/PageNotExist";
@@ -19,9 +20,10 @@ import AdminContent from "./pages/AdminContent";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import ViewAllProducts from "./pages/ViewAllProducts";
 import UpdateProduct from "./pages/UpdateProduct";
+import ResetPassword from "./pages/ResetPassword";
 
-import { useEffect,useState } from "react";
-import axios from "axios";
+
+
 
 const App = () => {
   
@@ -64,6 +66,8 @@ const App = () => {
           <Route path="/" element={<MainContent />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/log-in" element={<LogIn />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route
             path="/shipping"

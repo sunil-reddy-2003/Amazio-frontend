@@ -2,11 +2,13 @@ import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, use } from "react";
 import api from "../api/api";
+import PasswordVisibilityToggle from "../components/PasswordVisibilityToggle";
 
 const LogIn = () => {
   const { setIsLoggedIn, redirectAfterLogin, setRedirectAfterLogin, setUser } =useAuth();
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState(false);
   const [message,setMessage]=useState("");
 
@@ -72,7 +74,7 @@ const LogIn = () => {
       <div className="w-full md:w-[45%] bg-gray-800 flex items-center justify-center min-h-screen md:min-h-full">
 
         <form
-          className="w-full max-w-md px-4 sm:px-6 py-6 sm:py-8 md:py-10"
+          className="auth-form w-full max-w-md px-4 sm:px-6 py-6 sm:py-8 md:py-10"
           onSubmit={(e) => {
             e.preventDefault();
             postLogin();
@@ -83,7 +85,7 @@ const LogIn = () => {
           </h4>
 
           {/* Email or Mobile number */}
-          <div className="relative flex flex-col mb-3 sm:mb-4 text-white">
+          <div className="group relative flex flex-col mb-3 sm:mb-4 text-white">
             <input
               type="text"
               id="email"
@@ -102,10 +104,11 @@ const LogIn = () => {
               peer-focus:text-xs sm:peer-focus:text-xs md:peer-focus:text-sm
               peer-focus:font-light
               peer-focus:text-white
+              group-hover:text-white
 
               peer-not-placeholder-shown:-translate-y-2 sm:peer-not-placeholder-shown:-translate-y-2.5 md:peer-not-placeholder-shown:-translate-y-3
               peer-not-placeholder-shown:text-xs sm:peer-not-placeholder-shown:text-xs md:peer-not-placeholder-shown:text-sm
-              peer-not-placeholder-shown:text-black
+              peer-not-placeholder-shown:text-white
 
               peer-placeholder-shown:text-sm sm:peer-placeholder-shown:text-base"
             >
@@ -114,17 +117,21 @@ const LogIn = () => {
           </div>
 
           {/* Password */}
-          <div className="relative flex flex-col mb-4 sm:mb-5 md:mb-6 text-white">
+          <div className="group relative flex flex-col mb-4 sm:mb-5 md:mb-6 text-white">
             <input
-              type="password"
+              type={isPasswordVisible ? "text" : "password"}
               id="password"
               required
               placeholder=" "
-              className="peer text-sm sm:text-base md:text-lg px-3 sm:px-4 md:px-6 pt-4 sm:pt-5 md:pt-6 pb-2 sm:pb-2.5 md:pb-3 rounded-md bg-gray-900 border focus:outline-none focus:border-white"
+              className="peer text-sm sm:text-base md:text-lg pl-3 pr-12 sm:pl-4 sm:pr-12 md:pl-6 md:pr-12 pt-4 sm:pt-5 md:pt-6 pb-2 sm:pb-2.5 md:pb-3 rounded-md bg-gray-900 border focus:outline-none focus:border-white"
               value={loginData.password}
               onChange={(e) => {
                 setLoginData({ ...loginData, password: e.target.value });
               }}
+            />
+            <PasswordVisibilityToggle
+              isVisible={isPasswordVisible}
+              onToggle={() => setIsPasswordVisible((visible) => !visible)}
             />
             <label
               htmlFor="password"
@@ -133,10 +140,11 @@ const LogIn = () => {
               peer-focus:text-xs sm:peer-focus:text-xs md:peer-focus:text-sm
               peer-focus:font-light
               peer-focus:text-white
+              group-hover:text-white
 
               peer-not-placeholder-shown:-translate-y-2 sm:peer-not-placeholder-shown:-translate-y-2.5 md:peer-not-placeholder-shown:-translate-y-3
               peer-not-placeholder-shown:text-xs sm:peer-not-placeholder-shown:text-xs md:peer-not-placeholder-shown:text-sm
-              peer-not-placeholder-shown:text-black
+              peer-not-placeholder-shown:text-white
 
               peer-placeholder-shown:text-sm sm:peer-placeholder-shown:text-base"
             >
@@ -152,12 +160,12 @@ const LogIn = () => {
             Log in
           </button>
 
-          <button
-            type="button"
-            className="w-full rounded-full p-1.5 sm:p-2 md:p-2.5 mb-2 sm:mb-3 text-sm sm:text-base md:text-lg text-white bg-purple-800 hover:bg-rose-500 hover:font-bold transition cursor-pointer font-semibold"
+          <Link
+            to="/forgot-password"
+            className="block w-full rounded-full p-1.5 sm:p-2 md:p-2.5 mb-2 sm:mb-3 text-sm sm:text-base md:text-lg text-white bg-purple-800 hover:bg-rose-500 hover:font-bold transition cursor-pointer font-semibold text-center"
           >
             Forgot password?
-          </button>
+          </Link>
           <Link
             to="/adminlogin"
             className="px-3 sm:px-4 text-xs sm:text-sm text-white text-left cursor-pointer underline underline-offset-2 hover:text-green-400 transition-colors"

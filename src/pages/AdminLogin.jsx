@@ -2,6 +2,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import api from "../api/api";
+import PasswordVisibilityToggle from "../components/PasswordVisibilityToggle";
 
 const AdminLogin = () => {
   const { setIsAdmin } =
@@ -9,6 +10,7 @@ const AdminLogin = () => {
   const navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const postLogin = async () => {
     try {
@@ -36,7 +38,7 @@ const AdminLogin = () => {
       {/* Right Side */}
       <div className="flex min-h-screen w-full items-center justify-center bg-gray-800 px-4 py-10 md:w-full lg:w-[45%]">
         <form
-          className="w-full max-w-md px-2 py-6 sm:px-6 sm:py-10"
+          className="auth-form w-full max-w-md px-2 py-6 sm:px-6 sm:py-10"
           onSubmit={(e) => {
             e.preventDefault();
             postLogin();
@@ -51,7 +53,7 @@ const AdminLogin = () => {
           </h4>
 
           {/* Email or Mobile number */}
-          <div className="relative flex flex-col mb-4  text-white">
+          <div className="group relative flex flex-col mb-4 text-white">
             <input
               type="text"
               id="email"
@@ -70,6 +72,7 @@ const AdminLogin = () => {
               peer-focus:text-sm
               peer-focus:font-light
               peer-focus:text-white
+              group-hover:text-white
 
               peer-not-placeholder-shown:-translate-y-3
               peer-not-placeholder-shown:text-sm
@@ -83,17 +86,21 @@ const AdminLogin = () => {
           </div>
 
           {/* Password */}
-          <div className="relative flex flex-col mb-6 text-white">
+          <div className="group relative flex flex-col mb-6 text-white">
             <input
-              type="password"
+              type={isPasswordVisible ? "text" : "password"}
               id="password"
               required
               placeholder=" "
-              className="peer w-full rounded-md border bg-gray-900 px-4 pb-3 pt-6 text-base text-white sm:px-6 sm:text-xl"
+              className="peer w-full rounded-md border bg-gray-900 pl-4 pr-12 pb-3 pt-6 text-base text-white sm:pl-6 sm:pr-12 sm:text-xl"
               value={loginData.password}
               onChange={(e) => {
                 setLoginData({ ...loginData, password: e.target.value });
               }}
+            />
+            <PasswordVisibilityToggle
+              isVisible={isPasswordVisible}
+              onToggle={() => setIsPasswordVisible((visible) => !visible)}
             />
             <label
               htmlFor="password"
@@ -102,6 +109,7 @@ const AdminLogin = () => {
               peer-focus:text-sm
               peer-focus:font-light
               peer-focus:text-white
+              group-hover:text-white
 
               peer-not-placeholder-shown:-translate-y-3
               peer-not-placeholder-shown:text-sm

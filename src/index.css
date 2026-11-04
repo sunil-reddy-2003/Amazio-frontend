@@ -10,6 +10,18 @@ select:-webkit-autofill {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+form.auth-form input:autofill,
+form.auth-form input:autofill:hover,
+form.auth-form input:autofill:focus,
+form.auth-form input:-webkit-autofill,
+form.auth-form input:-webkit-autofill:hover,
+form.auth-form input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff;
+  caret-color: #ffffff;
+  -webkit-box-shadow: 0 0 0 1000px #111827 inset;
+  box-shadow: 0 0 0 1000px #111827 inset;
+}
+
 @keyframes toast-in {
   from {
     opacity: 0;
