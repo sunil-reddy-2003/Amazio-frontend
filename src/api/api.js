@@ -2,6 +2,22 @@ import axios from "axios";
 
 const api = axios.create();
 
+const getResponseMessage = (data) => {
+  if (typeof data === "string" && data.trim()) {
+    return data;
+  }
+
+  if (typeof data?.message === "string" && data.message.trim()) {
+    return data.message;
+  }
+
+  if (typeof data?.error === "string" && data.error.trim()) {
+    return data.error;
+  }
+
+  return null;
+};
+
 api.interceptors.response.use(
   (response) => {
     const result = response.data;
@@ -26,7 +42,7 @@ api.interceptors.response.use(
         new CustomEvent("app-toast", {
           detail: {
             type: "error",
-            message: result.message || "Something went wrong",
+            message: getResponseMessage(result) || "Request was not successful.",
           },
         })
       );
@@ -37,8 +53,9 @@ api.interceptors.response.use(
 
   (error) => {
     const message =
-      error.response?.data?.message ||
-      "Something went wrong. Please try again.";
+      getResponseMessage(error.response?.data) ||
+      error.message ||
+      "Request failed. Please try again.";
 
     window.dispatchEvent(
       new CustomEvent("app-toast", {

@@ -15,7 +15,7 @@ const ProductSearch = ({ searchVal, setSearchVal, onSearch, className = "" }) =>
       value={searchVal}
       placeholder="Search products..."
       aria-label="Search for products"
-      className="min-w-0 flex-1 bg-transparent px-4 py-2 text-sm text-white outline-none placeholder:text-white/70 sm:px-6"
+      className="min-w-0 flex-1 bg-transparent px-4 py-1.5 text-sm text-white outline-none placeholder:text-white/70 sm:px-5"
       onChange={(event) => {
         setSearchVal(event.target.value);
         if (event.target.value === "") onSearch("");
@@ -25,7 +25,7 @@ const ProductSearch = ({ searchVal, setSearchVal, onSearch, className = "" }) =>
       <button
         type="button"
         aria-label="Clear search"
-        className="px-3 py-2 hover:bg-white/20"
+        className="px-2.5 py-1.5 hover:bg-white/20"
         onClick={() => {
           setSearchVal("");
           onSearch("");
@@ -37,7 +37,7 @@ const ProductSearch = ({ searchVal, setSearchVal, onSearch, className = "" }) =>
     <button
       type="submit"
       aria-label="Submit search"
-      className="border-l px-4 py-2 transition hover:bg-white/30"
+      className="border-l px-3 py-1.5 transition hover:bg-white/30"
     >
       <i className="fa-solid fa-magnifying-glass" />
     </button>
@@ -75,7 +75,7 @@ const AdminNav = ({ onSearch }) => {
             searchVal={searchVal}
             setSearchVal={setSearchVal}
             onSearch={onSearch}
-            className="mx-4 hidden max-w-2xl flex-1 md:flex"
+            className="mx-4 hidden max-w-md flex-1 md:flex"
           />
         )}
 

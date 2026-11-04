@@ -32,7 +32,7 @@ const NavBar = (props) => {
 
   return (
     // mt-2 mx-4 rounded-full
-    <nav className="sticky flex items-center justify-between top-0 z-50 bg-gradient-to-r from-black/100 via-black/60 to-black/80 backdrop-blur-sm px-3 sm:px-6 md:px-14 py-3 sm:py-4 md:py-6 text-white">
+    <nav className="sticky flex items-center justify-start top-0 z-50 bg-gradient-to-r from-black/100 via-black/60 to-black/80 backdrop-blur-sm px-2 sm:px-4 lg:px-14 py-3 sm:py-4 md:py-6 text-white">
       <button
         onClick={() => setOpen((prev) => !prev)}
         className="md:hidden text-lg sm:text-xl"
@@ -52,14 +52,14 @@ const NavBar = (props) => {
       </Link>
 
       {/* search bar */}
-      {isLoggedIn && (<div className="hidden md:flex flex-1 mx-3 md:mx-6">
+      {isLoggedIn && (<div className="mx-2 flex min-w-0 max-w-[56rem] flex-1 sm:mx-3 lg:mx-4">
         <div className="relative flex items-center w-full border-2 rounded-full">
           <input
             type="text"
             value={searchVal}
             placeholder="Search products..."
             aria-label="Search for products"
-            className="px-4 md:px-8 py-1 md:py-2 rounded-l-full w-full placeholder:text-xs md:placeholder:text-base placeholder:tracking-widest text-sm md:text-base"
+            className="min-w-0 flex-1 px-4 md:px-6 py-2 md:py-2.5 rounded-l-full placeholder:text-xs md:placeholder:text-base placeholder:tracking-wide text-sm md:text-base outline-none focus:outline-none focus:ring-0"
             onChange={(e) => {
               setSearchVal(e.target.value);
               if (e.target.value === "") {
@@ -71,22 +71,26 @@ const NavBar = (props) => {
             }}
           ></input>
           {searchVal && (
-            <div
-              className="absolute right-12 md:right-14 cursor-pointer rounded-full hover:bg-white/40 hover:text-black p-1 md:p-2"
+            <button
+              type="button"
+              aria-label="Clear search"
+              className="flex shrink-0 items-center justify-center rounded-full p-2 hover:bg-white/40 hover:text-black"
               onClick={() => {
                 onSearch("");
                 setSearchVal("");
               }}
             >
-              <i className="fa-solid fa-xmark text-sm md:text-base"></i>
-            </div>
+              <i className="fa-solid fa-xmark text-sm"></i>
+            </button>
           )}
-          <div
-            className="border-l px-2 md:px-4 py-1 md:py-2 hover:bg-white/30 rounded-r-full cursor-pointer text-sm md:text-base"
+          <button
+            type="button"
+            aria-label="Submit search"
+            className="flex shrink-0 items-center justify-center border-l px-2 md:px-4 py-2 md:py-2.5 hover:bg-white/30 rounded-r-full cursor-pointer text-base"
             onClick={() => onSearch(searchVal)}
           >
             <i className="fa-solid fa-magnifying-glass"></i>
-          </div>
+          </button>
         </div>
       </div>)}
 
@@ -135,7 +139,7 @@ const NavBar = (props) => {
         )}
       </div>
 
-      <div className="flex gap-2 sm:gap-4 items-center">
+      <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-4">
         <Link
           to="/cart"
           className="flex flex-col items-center justify-center cursor-pointer border-t-2 rounded-full text-sm sm:text-base"

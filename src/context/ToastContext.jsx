@@ -113,7 +113,7 @@ export const ToastProvider = ({ children }) => {
   {/* Message */}
   <div className="flex flex-col">
     <span className="text-sm font-bold tracking-wide">
-      {toast.type === "success" ? "Success" : "Something went wrong"}
+      {toast.type === "success" ? "Success" : "Error"}
     </span>
 
     <span className="text-xs opacity-80 font-medium">
