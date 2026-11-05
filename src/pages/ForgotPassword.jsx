@@ -24,7 +24,7 @@ const ForgotPassword = () => {
 
     try {
       const response = await api.post(
-        `${import.meta.env.VITE_USER_BASE_URL}/api/v1/auth/forgot-password`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/forgot-password`,
         { email: trimmedEmail }
       );
 

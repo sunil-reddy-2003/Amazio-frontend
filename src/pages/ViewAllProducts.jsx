@@ -24,7 +24,7 @@ const ViewAllProducts = () => {
             try {
                 const response = await api({
                     method: "get",
-                    url: `${import.meta.env.VITE_PRODUCT_BASE_URL}/api/v1/products/`,
+                    url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/products/`,
                     params: {
                         page: currentPage,
                         size: pageSize,
@@ -58,7 +58,7 @@ const ViewAllProducts = () => {
         try {
             const responce = await api({
                 method: "delete",
-                url: `${import.meta.env.VITE_PRODUCT_BASE_URL}/api/v1/admin/products/${prodId}`,
+                url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/products/${prodId}`,
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }

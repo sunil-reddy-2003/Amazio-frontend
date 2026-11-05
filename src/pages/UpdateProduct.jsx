@@ -25,7 +25,7 @@ const UpdateProduct = () => {
             try {
                 const responce = await api({
                     method: "get",
-                    url: `${import.meta.env.VITE_PRODUCT_BASE_URL}/api/v1/admin/products/${id}`,
+                    url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/products/${id}`,
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`
                     }
@@ -51,7 +51,7 @@ const UpdateProduct = () => {
         try {
             const prodResp = await api({
                 method: "put",
-                url: `${import.meta.env.VITE_PRODUCT_BASE_URL}/api/v1/admin/products/${id}`,
+                url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/products/${id}`,
                 data: productInfo,
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`

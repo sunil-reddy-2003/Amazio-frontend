@@ -82,7 +82,7 @@ const Layout = () => {
 
       try {
         const response = await api.post(
-          `${import.meta.env.VITE_ORDER_BASE_URL}/api/v1/orders/`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/orders/`,
           newOrder,
           {
             headers: {

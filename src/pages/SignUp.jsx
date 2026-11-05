@@ -20,7 +20,7 @@ const SignUp = () => {
   const signUpRequest = async () => {
     try {
       const request = await api.post(
-        `${import.meta.env.VITE_USER_BASE_URL}/api/v1/auth/signup`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/signup`,
         signUpData,
       );
       

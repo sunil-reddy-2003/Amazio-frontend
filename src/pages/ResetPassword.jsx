@@ -44,7 +44,7 @@ const ResetPassword = () => {
 
     try {
       const response = await api.post(
-        `${import.meta.env.VITE_USER_BASE_URL}/api/v1/auth/reset-password`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/reset-password`,
         {
           token,
           newPassword,

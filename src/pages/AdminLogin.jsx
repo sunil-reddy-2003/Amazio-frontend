@@ -15,7 +15,7 @@ const AdminLogin = () => {
   const postLogin = async () => {
     try {
       const request = await api.post(
-        `${import.meta.env.VITE_USER_BASE_URL}/api/v1/auth/adminlogin`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/adminlogin`,
         loginData,
       );
       console.log("inside postLogin: ",request.data);

@@ -19,7 +19,7 @@ const Orders = () => {
         }
 
         const ordersResponse = await api.get(
-          `${import.meta.env.VITE_ORDER_BASE_URL}/api/v1/orders/userid/${user.userId}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/orders/userid/${user.userId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`

@@ -35,7 +35,7 @@ const Shipping = () => {
     try {
       const response = await api({
         method: "post",
-        url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/addresses/${user.userId}`,
+        url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/addresses/${user.userId}`,
         data: payload,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -57,7 +57,7 @@ const Shipping = () => {
     try {
       const response = await api({
       method: "put",
-      url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/addresses/${user.userId}/${updateId}`,
+      url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/addresses/${user.userId}/${updateId}`,
       data: updateAddress,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -75,7 +75,7 @@ const Shipping = () => {
     try {
       const response = await api({
       method: "delete",
-      url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/addresses/${user.userId}/${addressId}`,
+      url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/addresses/${user.userId}/${addressId}`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       }
@@ -124,7 +124,7 @@ const Shipping = () => {
       try {
         const response = await api({
           method: "get",
-          url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/addresses/${user.userId}`,
+          url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/addresses/${user.userId}`,
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }

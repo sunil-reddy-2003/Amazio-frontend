@@ -20,7 +20,7 @@ const AddProduct = () => {
         try {
             const postProduct = await api({
                 method: "post",
-                url: `${import.meta.env.VITE_PRODUCT_BASE_URL}/api/v1/admin/products/`,
+                url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/products/`,
                 data: productDetails,
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`

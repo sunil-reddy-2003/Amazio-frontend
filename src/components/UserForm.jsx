@@ -9,7 +9,7 @@ const UserForm = (props) => {
         try {
             const response = await api({
                 method: "put",
-                url: `${import.meta.env.VITE_USER_BASE_URL}/api/v1/users/${user.userId}`,
+                url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/${user.userId}`,
                 data: userData,
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`

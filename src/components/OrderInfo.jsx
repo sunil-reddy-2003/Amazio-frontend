@@ -13,7 +13,7 @@ const OrderInfo = () => {
     const getOrder = async () => {
       try{
         const orderResponse = await api.get(
-        `${import.meta.env.VITE_ORDER_BASE_URL}/api/v1/orders/orderid/${orderId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/orders/orderid/${orderId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

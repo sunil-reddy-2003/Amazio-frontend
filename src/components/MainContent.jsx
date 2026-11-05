@@ -28,7 +28,7 @@ const MainContent = () => {
       try {
         const response = await api({
           method: "get",
-          url: `${import.meta.env.VITE_PRODUCT_BASE_URL}/api/v1/products/`,
+          url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/products/`,
           params: {
             page: currentPage,
             size: pageSize,
