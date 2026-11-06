@@ -7,7 +7,7 @@ const OrderCard = React.memo((props) => {
     <div
       className="flex flex-col m-1 w-full hover:scale-98 duration-600 cursor-pointer rounded-lg hover:bg-purple-200 transition-transform"
       onClick={() => {
-        navigate(`/orders/${order.orderId}`);
+        navigate(`/orders/orderid/${order.orderId}`);
       }}
     >
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 sm:px-6 md:px-8 rounded-t-lg backdrop-blur-xl bg-white/60 gap-3 sm:gap-0">

@@ -102,7 +102,7 @@ const App = () => {
             }
           ></Route>
           <Route
-            path="/orders/:orderId"
+            path="/orders/orderid/:orderId"
             element={
               <ProtectedRoute>
                 <OrderInfo />
