@@ -16,7 +16,7 @@ const MainContent = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(16);
-  const [totalPages, setTotalPages] = useState();
+  const [totalPages, setTotalPages] = useState(1);
 
 
 
@@ -38,8 +38,20 @@ const MainContent = () => {
           paramsSerializer: (params) => qs.stringify(params, { arrayFormat: "repeat" })
         });
 
-        setProducts(response.data.content);
-        setTotalPages(response.data.totalPages);
+        const content = response.data.content;
+        const reportedPages = Number(response.data.page.totalPages);
+        const totalElements = Number(response.data.page.totalElements);
+        const inferredPages = Number.isFinite(totalElements) && totalElements > 0
+          ? Math.ceil(totalElements / pageSize)
+          : content.length >= pageSize
+            ? currentPage + 2
+            : currentPage + 1;
+        const validReportedPages = Number.isFinite(reportedPages) && reportedPages > 0
+          ? reportedPages
+          : 1;
+
+        setProducts(content);
+        setTotalPages(Math.max(validReportedPages, inferredPages, 1));
 
         // console.log("inside getData: ", response.data);
       } catch (error) {
@@ -53,10 +65,10 @@ const MainContent = () => {
 
   useEffect(() => {
     setCurrentPage(0);
-  }, [category]);
+  }, [category, searchText]);
 
   return (
-    <>
+    <div className="flex flex-1 flex-col">
       <CategoryBar category={category} setCategory={setCategory} />
       <div
         className={
@@ -84,7 +96,7 @@ const MainContent = () => {
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
       />
-    </>
+    </div>
   );
 };
 

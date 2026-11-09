@@ -142,7 +142,7 @@ const Layout = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-r from-black/20 via-black/50 to-black/20">
       <NavBar onSearch={setSearchText} cartTotal={totalItems} />
-      <main className="flex-1 ">
+      <main className="flex flex-1 flex-col">
         <Outlet context={outletContext} />
       </main>
       <Footer />
