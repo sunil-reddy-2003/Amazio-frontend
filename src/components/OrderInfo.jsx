@@ -42,7 +42,7 @@ const OrderInfo = () => {
         <h2 className="px-2 mb-2 text-xs sm:text-sm md:text-base">
           Order placed on <span>{order.data.date}</span> | order number{" "}
           <span className="underline decoration-purple-900 decoration-dotted text-purple-900">
-            {order.data.orderId}
+            {orderId}
           </span>
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-2 gap-2 sm:gap-3 md:gap-4 border border-gray-400 rounded-md my-2">
